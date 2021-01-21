@@ -1,12 +1,47 @@
 #!groovy​
 
+String getPrevVer(String version) {
+    def verTokens = version.tokenize('.')
+    major = verTokens[0].toInteger()
+    minor = verTokens[1].toInteger() - 1
+    patch = verTokens[2].toInteger() 
+    return "${major}.${minor}.${patch}"
+}
+
+String getBranchName(String version) {
+    def verTokens = version.tokenize('.')
+    major = verTokens[0].toInteger()
+    minor = verTokens[1].toInteger()
+    return "release/${major}.${minor}"
+}
+
+@NonCPS
+def getConanVersion(String versionLine) {
+    def versionMatch = versionLine =~ /(?:\')([\d.]+)(?:\-dev)/
+    return versionMatch[0][1]
+}
+
 node('Linux') {
-    String masterBranch = 'master'
-    boolean isMaster = env.BRANCH_NAME == masterBranch
+
+    // get the default branch
+    def verUrl = "https://raw.githubusercontent.com/conan-io/conan/develop/conans/__init__.py"
+    def versionLine = sh(returnStdout: true, script: "curl '${verUrl}' | grep __version__").trim()
+    def devConanVersion = getConanVersion(versionLine)
+    // we are getting the 1.x.0 version, maybe check the branch for the 
+    // real version? maybe checks the tags of the repo to get the 
+    def currentConanVersion = getPrevVer(devConanVersion)
+    def devBranch = getBranchName(devConanVersion)
+    def defaultBranch = getBranchName(currentConanVersion)
+    boolean triggerPublish = env.BRANCH_NAME == defaultBranch
+
+    echo devBranch
+    echo defaultBranch
+    echo env.BRANCH_NAME
+    def environmentVars = sh(returnStdout: true, script: "printenv")
+    echo environmentVars
 
     stage('Clone sources') {
         def scmVars = checkout scm
-        print(scmVars)
     }
 
     // def image = null
@@ -40,13 +75,18 @@ node('Linux') {
     //         }
     //     }
     // }
-
-    // // 'master' branch is published to GH pages
-    // if (isMaster) {
-    //     build(job: 'Conan-Docs-Publish', propagate: true, wait: true, parameters: [
-    //         [$class: 'StringParameterValue', name: 'latest', value: masterBranch],
-    //         [$class: 'StringParameterValue', name: 'prefix', value: 'https://docs.conan.io/'],
-    //         [$class: 'BooleanParameterValue', name: 'publish', value: true]
-    //     ])
-    // }
+    // The most common case is that publishBranches is equal to the default branch, but sometimes
+    // for example if you release a patch version i.e. 1.35.2 and the default branch is 1.37.0 then
+    // you want to update the release/1.37 documentation but also the release/1.35 documentation
+    // this additional publish branch will be passed by the ci that releases Conan that is the one 
+    // that nows that
+    def publishBranches = defaultBranch
+    if (triggerPublish) {
+        build(job: 'Conan-Docs-Publish', propagate: true, wait: true, parameters: [
+            [$class: 'StringParameterValue', name: 'default_branch', value: defaultBranch],
+            [$class: 'StringParameterValue', name: 'publish_branches', value: defaultBranch],
+            [$class: 'StringParameterValue', name: 'prefix', value: ''],
+            [$class: 'BooleanParameterValue', name: 'publish', value: true]
+        ])
+    }
 }
