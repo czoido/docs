@@ -27,8 +27,10 @@ node('Linux') {
     def verUrl = "https://raw.githubusercontent.com/conan-io/conan/develop/conans/__init__.py"
     def versionLine = sh(returnStdout: true, script: "curl '${verUrl}' | grep __version__").trim()
     def devConanVersion = getConanVersion(versionLine)
+
     // we are getting the 1.x.0 version, maybe check the branch for the 
     // real version? maybe checks the tags of the repo to get the 
+
     def currentConanVersion = getPrevVer(devConanVersion)
     def devBranch = getBranchName(devConanVersion)
     def defaultBranch = getBranchName(currentConanVersion)
@@ -44,49 +46,52 @@ node('Linux') {
         def scmVars = checkout scm
     }
 
-    // def image = null
-    // stage('Build docker image') {
-    //     image = docker.build('conan-docs', '-f .ci/Dockerfile .')  // It should cache the image
-    // }
+    def image = null
+    stage('Build docker image') {
+        image = docker.build('conan-docs', '-f .ci/Dockerfile .')  // It should cache the image
+    }
 
-    // stage('Test build') {
-    //     parallel html: {
-    //         image.inside {
-    //             sh 'make html'
-    //         }
-    //     },
-    //     pdf: {
-    //         image.inside {
-    //             sh 'make latex'
-    //         }
-    //     },
-    //     spelling: {
-    //         image.inside {
-    //             sh 'make spelling'
-    //         }
-    //     },
-    //     linkcheck: {
-    //         image.inside {
-    //             int output = sh(script: 'make linkcheck', returnStatus: true)
-    //             if (output != 0) {
-    //                 currentBuild.result = 'FAILURE'
-    //                 error('Stop here, linkcheck failed!')
-    //             }
-    //         }
-    //     }
-    // }
+    stage('Test build') {
+        parallel html: {
+            image.inside {
+                sh 'make html'
+            }
+        },
+        pdf: {
+            image.inside {
+                sh 'make latex'
+            }
+        },
+        spelling: {
+            image.inside {
+                sh 'make spelling'
+            }
+        },
+        linkcheck: {
+            image.inside {
+                int output = sh(script: 'make linkcheck', returnStatus: true)
+                if (output != 0) {
+                    currentBuild.result = 'FAILURE'
+                    error('Stop here, linkcheck failed!')
+                }
+            }
+        }
+    }
+
+
     // The most common case is that publishBranches is equal to the default branch, but sometimes
     // for example if you release a patch version i.e. 1.35.2 and the default branch is 1.37.0 then
     // you want to update the release/1.37 documentation but also the release/1.35 documentation
     // this additional publish branch will be passed by the ci that releases Conan that is the one 
     // that nows that that branch should be published
     // publishBranches = "release/1.34;release/1.33"
+
     def publishBranches = defaultBranch
     if (triggerPublish) {
         build(job: 'Conan-Docs-Publish', propagate: true, wait: true, parameters: [
             [$class: 'StringParameterValue', name: 'latest', value: defaultBranch],
             [$class: 'StringParameterValue', name: 'branches_to_publish', value: publishBranches],
-            [$class: 'StringParameterValue', name: 'prefix', value: ''],
+            [$class: 'StringParameterValue', name: 'prefix', value: 'https://czoido.github.io/docs/'],
             [$class: 'BooleanParameterValue', name: 'publish', value: true]
         ])
     }
