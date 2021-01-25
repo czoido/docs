@@ -94,25 +94,22 @@ node('Linux') {
     if (triggerPublish) {
         stage("Check if the ci should also publish ${currentReleaseBranch} branch") {
             // check if latest branch and current release branch have changes in documentation: rst
-            sh "git clone --branch ${currentReleaseBranch} --depth 1 https://github.com/czoido/docs.git src"
+            sh "git clone --branch ${currentReleaseBranch} --depth 2 https://github.com/czoido/docs.git src"
             dir("src") {
                 def release_last_commit = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
                 echo release_last_commit
                 sh 'git fetch origin latest:latest && git checkout latest'
                 def current_commit = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                def count_doc_changes = sh(script: "git diff --name-only ${release_last_commit}..${current_commit} | grep rst | wc -l", returnStdout: true).trim() as int
-                def count_changes_with_rst = sh(script: "git diff --name-only ${release_last_commit}..${current_commit} | wc -l", returnStdout: true).trim() as int
-                print "doc changes: ${count_doc_changes}"
-                print "changes with rst: ${count_changes_with_rst}"
-                if (count_doc_changes==0) {
-                    // release branch does not have extra documentation, let's check if the commit 
-                    // we are merging is also in the release branch --> merging back release to latest
-                    // check if this commit is in the release branch
+                def prev_commit = sh(script: 'git rev-parse HEAD^1', returnStdout: true).trim()
+                def changes_prev_release = sh(script: "git diff --name-only ${release_last_commit}..${prev_commit} | wc -l", returnStdout: true).trim() as int
+                print changes_prev_release
+                if (changes_prev_release==0) {
+                    // release and latest have the same content, we can open a PR to release branch to add
+                    // this commit if the commit is already in release branch, we are merging back the release branch
+                    // so then publish
                     def commit_in_branch = sh(script: "git branch --contains ${current_commit} | grep ${currentReleaseBranch} | wc -l", returnStdout: true).trim() as int
                     if (commit_in_branch>0) {
                         echo """
-                            No changes in documentation and also the commit we have merged is in the 
-                            current release branch: ${currentReleaseBranch}.
                             We are merging the release branch to latest, let's rebuild and publish
                         """
                         publishBranches = publishBranches + ";" + currentReleaseBranch
@@ -121,10 +118,12 @@ node('Linux') {
                         // TODO open a PR to merge the latest merge to the release branch
                         echo "Do not publish ${currentReleaseBranch} but open a PR to ${currentReleaseBranch} to merge the changes"
                     }
+
                 }
                 else {
-                    echo "latest and ${currentReleaseBranch} branches have different documentation, do not publish ${currentReleaseBranch}"
-                }                
+                    echo "Latest and ${currentReleaseBranch} not in sync, not publish release branch or open a PR"
+                }
+              
             }
 
         }
