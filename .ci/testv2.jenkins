@@ -23,10 +23,12 @@ def getConanVersion(String versionLine) {
 
 node('Linux') {
 
+    def publishBranches = "latest"
+
     // get the default branch
     def verUrl = "https://raw.githubusercontent.com/conan-io/conan/develop/conans/__init__.py"
     def versionLine = sh(returnStdout: true, script: "curl '${verUrl}' | grep __version__").trim()
-
+    
     // get the branch of the upcoming release
     def devConanVersion = getConanVersion(versionLine)
     def devBranch = getBranchName(devConanVersion)
@@ -42,44 +44,42 @@ node('Linux') {
     echo devBranch
     echo currentReleaseBranch
     echo env.BRANCH_NAME
-    def environmentVars = sh(returnStdout: true, script: "printenv")
-    echo environmentVars
 
-    stage('Clone sources') {
-        def scmVars = checkout scm
-    }
+    // stage('Clone sources') {
+    //     checkout scm
+    // }
 
-    def image = null
-    stage('Build docker image') {
-        image = docker.build('conan-docs', '-f .ci/Dockerfile .')  // It should cache the image
-    }
+    // def image = null
+    // stage('Build docker image') {
+    //     image = docker.build('conan-docs', '-f .ci/Dockerfile .')  // It should cache the image
+    // }
 
-    stage('Test build') {
-        parallel html: {
-            image.inside {
-                sh 'make html'
-            }
-        },
-        pdf: {
-            image.inside {
-                sh 'make latex'
-            }
-        },
-        spelling: {
-            image.inside {
-                sh 'make spelling'
-            }
-        },
-        linkcheck: {
-            image.inside {
-                int output = sh(script: 'make linkcheck', returnStatus: true)
-                if (output != 0) {
-                    currentBuild.result = 'FAILURE'
-                    error('Stop here, linkcheck failed!')
-                }
-            }
-        }
-    }
+    // stage('Test build') {
+    //     parallel html: {
+    //         image.inside {
+    //             sh 'make html'
+    //         }
+    //     },
+    //     pdf: {
+    //         image.inside {
+    //             sh 'make latex'
+    //         }
+    //     },
+    //     spelling: {
+    //         image.inside {
+    //             sh 'make spelling'
+    //         }
+    //     },
+    //     linkcheck: {
+    //         image.inside {
+    //             int output = sh(script: 'make linkcheck', returnStatus: true)
+    //             if (output != 0) {
+    //                 currentBuild.result = 'FAILURE'
+    //                 error('Stop here, linkcheck failed!')
+    //             }
+    //         }
+    //     }
+    // }
 
     // We have to check now the branches that we want to publish
     // if we are merging back changes from the current release branch
@@ -91,7 +91,46 @@ node('Linux') {
     // 2. check that latest and current release branch are "equal"
     // 1 && 2 --> publish latest and release branch
 
-    // def publishBranches = "latest"
+    if (triggerPublish) {
+        stage("Check if the ci should also publish ${currentReleaseBranch} branch") {
+            // check if latest branch and current release branch have changes in documentation: rst
+            sh "git clone --branch ${currentReleaseBranch} --depth 1 https://github.com/czoido/docs.git src"
+            dir("src") {
+                def release_last_commit = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
+                echo release_last_commit
+                sh 'git fetch origin latest:latest && git checkout latest'
+                def current_commit = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                def count_doc_changes = sh(script: "git diff --name-only ${release_last_commit}..${current_commit} | grep rst | wc -l", returnStdout: true).trim() as int
+                def count_changes_with_rst = sh(script: "git diff --name-only ${release_last_commit}..${current_commit} | wc -l", returnStdout: true).trim() as int
+                print "doc changes: ${count_doc_changes}"
+                print "changes with rst: ${count_changes_with_rst}"
+                if (count_doc_changes==0) {
+                    // release branch does not have extra documentation, let's check if the commit 
+                    // we are merging is also in the release branch --> merging back release to latest
+                    // check if this commit is in the release branch
+                    def commit_in_branch = sh(script: "git branch --contains ${current_commit} | grep ${currentReleaseBranch} | wc -l", returnStdout: true).trim() as int
+                    if (commit_in_branch>0) {
+                        echo """
+                            No changes in documentation and also the commit we have merged is in the 
+                            current release branch: ${currentReleaseBranch}.
+                            We are merging the release branch to latest, let's rebuild and publish
+                        """
+                        publishBranches = publishBranches + ";" + currentReleaseBranch
+                    }
+                    else {
+                        // TODO open a PR to merge the latest merge to the release branch
+                        echo "Do not publish ${currentReleaseBranch} but open a PR to ${currentReleaseBranch} to merge the changes"
+                    }
+                }
+                else {
+                    echo "latest and ${currentReleaseBranch} branches have different documentation, do not publish ${currentReleaseBranch}"
+                }                
+            }
+
+        }
+    }
+
+    echo publishBranches
     // if (triggerPublish) {
     //     build(job: 'Conan-Docs-Publish', propagate: true, wait: true, parameters: [
     //         [$class: 'StringParameterValue', name: 'latest', value: currentReleaseBranch],
