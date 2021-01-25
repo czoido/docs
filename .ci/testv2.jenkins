@@ -91,13 +91,13 @@ node('Linux') {
     // 2. check that latest and current release branch are "equal"
     // 1 && 2 --> publish latest and release branch
 
-    def publishBranches = "latest"
-    if (triggerPublish) {
-        build(job: 'Conan-Docs-Publish', propagate: true, wait: true, parameters: [
-            [$class: 'StringParameterValue', name: 'latest', value: currentReleaseBranch],
-            [$class: 'StringParameterValue', name: 'branches_to_publish', value: publishBranches],
-            [$class: 'StringParameterValue', name: 'prefix', value: 'https://czoido.github.io/docs/'],
-            [$class: 'BooleanParameterValue', name: 'publish', value: true]
-        ])
-    }
+    // def publishBranches = "latest"
+    // if (triggerPublish) {
+    //     build(job: 'Conan-Docs-Publish', propagate: true, wait: true, parameters: [
+    //         [$class: 'StringParameterValue', name: 'latest', value: currentReleaseBranch],
+    //         [$class: 'StringParameterValue', name: 'branches_to_publish', value: publishBranches],
+    //         [$class: 'StringParameterValue', name: 'prefix', value: 'https://czoido.github.io/docs/'],
+    //         [$class: 'BooleanParameterValue', name: 'publish', value: true]
+    //     ])
+    // }
 }
