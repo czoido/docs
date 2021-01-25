@@ -26,18 +26,21 @@ node('Linux') {
     // get the default branch
     def verUrl = "https://raw.githubusercontent.com/conan-io/conan/develop/conans/__init__.py"
     def versionLine = sh(returnStdout: true, script: "curl '${verUrl}' | grep __version__").trim()
+
+    // get the branch of the upcoming release
     def devConanVersion = getConanVersion(versionLine)
-
-    // we are getting the 1.x.0 version, maybe check the branch for the 
-    // real version? maybe checks the tags of the repo to get the 
-
-    def currentConanVersion = getPrevVer(devConanVersion)
     def devBranch = getBranchName(devConanVersion)
-    def defaultBranch = getBranchName(currentConanVersion)
-    boolean triggerPublish = env.BRANCH_NAME == defaultBranch
+
+    // get the branch of the latest published Conan version
+    // if we merge something to latest, we also want to make sure
+    // that we are merging back those changes to the current release branch
+    def currentConanVersion = getPrevVer(devConanVersion)
+    def currentReleaseBranch = getBranchName(currentConanVersion)
+
+    boolean triggerPublish = env.BRANCH_NAME == "latest"
 
     echo devBranch
-    echo defaultBranch
+    echo currentReleaseBranch
     echo env.BRANCH_NAME
     def environmentVars = sh(returnStdout: true, script: "printenv")
     echo environmentVars
@@ -78,18 +81,20 @@ node('Linux') {
         }
     }
 
+    // We have to check now the branches that we want to publish
+    // if we are merging back changes from the current release branch
+    // and we are not in the middle of developing a patch version
+    // latest and release branch should be equal (but we have to exclude from the check
+    // thing from _static, _themes, _templates...) if that comparison returns true, we publish
+    // the latest branch and also the current release branch
+    // 1. check that the commit we are merging is in the current release branch
+    // 2. check that latest and current release branch are "equal"
+    // 1 && 2 --> publish latest and release branch
 
-    // The most common case is that publishBranches is equal to the default branch, but sometimes
-    // for example if you release a patch version i.e. 1.35.2 and the default branch is 1.37.0 then
-    // you want to update the release/1.37 documentation but also the release/1.35 documentation
-    // this additional publish branch will be passed by the ci that releases Conan that is the one 
-    // that nows that that branch should be published
-    // publishBranches = "release/1.34;release/1.33"
-
-    def publishBranches = defaultBranch
+    def publishBranches = "latest"
     if (triggerPublish) {
         build(job: 'Conan-Docs-Publish', propagate: true, wait: true, parameters: [
-            [$class: 'StringParameterValue', name: 'latest', value: defaultBranch],
+            [$class: 'StringParameterValue', name: 'latest', value: currentReleaseBranch],
             [$class: 'StringParameterValue', name: 'branches_to_publish', value: publishBranches],
             [$class: 'StringParameterValue', name: 'prefix', value: 'https://czoido.github.io/docs/'],
             [$class: 'BooleanParameterValue', name: 'publish', value: true]
