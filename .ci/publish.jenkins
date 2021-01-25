@@ -1,0 +1,160 @@
+#!groovy​
+
+node('Linux') {
+
+    String prefix = params.prefix ?: "${BUILD_URL}artifact/gh-pages/"
+    def branches
+    stage('Check params') {
+        assert params.latest, 'Provide a name to the "latest" branch'
+        assert params.branches_to_publish, 'Provide branches to publish separated with semicolons'
+        if (params.publish) {
+            assert params.prefix, 'Provide the prefix (base URL) if you are going to publish'
+        }
+        branches = params.branches_to_publish.split(";")
+        echo """
+            Generate Conan docs webpage
+             - params.latest: ${params.latest}
+             - params.publish: ${params.publish}
+             - params.branches_to_publish: ${params.branches_to_publish}
+             - params.build_all_branches: ${params.build_all_branches}
+             - prefix: ${prefix}
+             - versions: latest (${params.latest}), ${branches.join(', ')}
+        """
+    }
+
+    def build_all_branches = params.build_all_branches
+    def image = null
+    stage('Build docker image') {
+        // Build the docker image using the same commit as the current 'publish.jenkins' file
+        sh "git clone --branch ${params.latest} --depth 2 https://github.com/czoido/docs.git tmp"
+        dir('tmp') {
+            if (!build_all_branches) {
+                // we have to check if we have changed _themes/conan in the latest branch --> in that case we have
+                // rebuild the docs for all branches, also if this is triggered by the generation of a new Conan
+                // version we should publish all the documentation, if this is triggered by a new release 
+                def current_commit = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
+                def previous_commit = sh(script: "git rev-parse HEAD^1", returnStdout: true).trim()
+                // check if this commit modified the _themes folder
+                def count = sh(script: "git diff --name-only ${previous_commit}..${current_commit} | sort -u | uniq | grep _themes | wc -l", returnStdout: true).trim() as int
+                if (count>0) {
+                    build_all_branches = true
+                    echo "No changes detected for docs templates, will build only branches ${branches.join(', ')}"
+                }
+                else {
+                    echo "Docs template changes detected. Build all branches"
+                }
+            }
+            image = docker.build('conan-docs', '-f .ci/Dockerfile .')  // It should cache the image
+            deleteDir()
+        }
+    }
+
+    // check this for 2.0 docs
+    def minVersionToPublish = "1.3"
+    def latestVersion = params.latest.split("/")[1]
+    def minMinor = minVersionToPublish.split("\\.")[1].toInteger()
+    def latestMinor = latestVersion.split("\\.")[1].toInteger()
+    Map<String, String> versionsToBuild = [:]
+    Map<String, String> versionsAll = [:]
+    for (ver = minMinor; ver<=latestMinor; ver++) {
+        versionsAll["release/1.${ver}"] = "1.${ver}"
+    }        
+    if (!build_all_branches) {
+        branches.each { branch ->
+            version = branch.split("/")[1]
+            versionsToBuild[branch] = version
+        }
+    }
+    else {
+        versionsToBuild = versionsAll
+    }
+
+    print versionsToBuild
+    print versionsAll
+
+    stage('Prepare sources as worktrees') { // Do this sequentially
+        sh 'git clone --bare https://github.com/czoido/docs.git src'
+        dir('src') {
+            // create latest branch
+            versionsToBuild.each { branchName, folderName ->
+                sh "git fetch origin ${branchName}:${branchName}"
+                sh "git worktree add ../${folderName} ${branchName}"
+            }
+            sh "git fetch origin ${params.latest}:latest"
+            sh "git worktree add ../latest latest"
+            // Prepare the worktree for gh-pages too
+            sh 'git fetch origin gh-pages:gh-pages'
+            sh 'git worktree add ../gh-pages gh-pages'
+        }
+    }
+
+    versionsToBuild['latest'] = 'latest'
+
+    Map parallelJobs = [:]
+    versionsToBuild.each { key, value ->
+        String branchName = key
+        String folderName = value
+        parallelJobs[folderName] = {
+            echo "Run parallel job for ${branchName} inside ${folderName}"
+            image.inside {
+                stage('Prepare sources') {
+                    writeJSON json: versionsAll, file: "${folderName}/versions.json"
+                    if (build_all_branches) {
+                        if (folderName != 'latest') { 
+                            sh "rm -fr ${folderName}/_themes/conan"
+                            sh "cp -a latest/_themes/. ${folderName}/_themes/"
+                        }
+                    }
+                }
+
+                stage('HTML') {
+                    sh "sphinx-build -W -b html -d ${folderName}/_build/.doctrees ${folderName}/ gh-pages/en/${folderName}"
+                }
+
+                // stage('PDF') {
+                //     sh "sphinx-build -W -b latex -d ${folderName}/_build/.doctrees ${folderName}/ ${folderName}/_build/latex"
+                //     sh "make -C ${folderName}/_build/latex all-pdf"
+                //     sh "cp ${folderName}/_build/latex/conan.pdf gh-pages/en/${folderName}/conan.pdf"
+                // }
+            }
+        }
+    }
+
+    stage('Generate all releases') {
+        parallelJobs.failFast = true
+        parallel parallelJobs
+    }
+
+    stage('Prepare gh-branch') {
+        dir('gh-pages') {
+            // sh 'cp src/versions.json versions.json'  // TODO: File is not used, remove from 'gh-pages' branch
+            sh 'cp en/latest/404.html 404.html'
+
+            String content = readFile('404.html')
+            String prefixLatest = "${prefix}en/latest"
+            content = content.replaceAll('href="_', "href=\"${prefixLatest}/_")
+            content = content.replaceAll('src="_', "src=\"${prefixLatest}/_")
+            content = content.replaceAll('alt="_', "alt=\"${prefixLatest}/_")
+            content = content.replaceAll('internal" href="', "internal\" href=\"${prefixLatest}/")
+            content = content.replaceAll('"search.html"', "\"${prefixLatest}/search.html\"")
+            content = content.replaceAll('"genindex.html"', "\"${prefixLatest}/genindex.html\"")
+            writeFile(file: '404.html', text: content)
+        }
+    }
+
+    stage('Archive generated folder') {
+        archiveArtifacts artifacts: 'gh-pages/**/*.*'
+        echo "Inspect generated webpage at ${BUILD_URL}artifact/gh-pages/index.html"
+    }
+    
+    dir('gh-pages') {
+        sh 'git add .'
+        sh 'git config user.email "conanci@jfrog.com"'
+        sh 'git config user.name "ConanCI bot"'
+        sh "git commit -m \"Automatic deploy (build number ${BUILD_NUMBER})\""
+        withCredentials([usernamePassword(credentialsId: 'conanci-gh-token-stg', usernameVariable: 'GH_USER', passwordVariable: 'GH_PASS')]) {
+            sh "git remote add origin-pages https://$GH_USER:$GH_PASS@github.com/czoido/docs.git"
+            sh 'git push --quiet origin-pages gh-pages'
+        }
+    }
+}
