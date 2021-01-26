@@ -98,7 +98,7 @@ node('Linux') {
                 publishBranches = "latest"
                 def latest_head = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                 sh "git fetch origin ${currentReleaseBranch}:${currentReleaseBranch} && git checkout ${currentReleaseBranch}"
-                sh 'git config --global user.email "you@example.com" && git config --global user.name "Your Name" && git merge origin/latest'
+                sh 'git config --global user.email "you@example.com" && git config --global user.name "Your Name" && git merge origin/latest || true'
                 def release_head = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                 sh "git diff --name-only ${latest_head}..${release_head}"
                 def diff_branches = sh(script: "git diff --name-only ${latest_head}..${release_head} | wc -l", returnStdout: true).trim() as int
@@ -121,11 +121,14 @@ node('Linux') {
                     echo "---- Will publish the ${currentReleaseBranch}"
                     publishBranches = "${currentReleaseBranch}"
                 }
+                else {
+                    echo "latest and ${currentReleaseBranch} are out of sync, won't publish ${currentReleaseBranch}"
+                }
             }
         }
     }
 
-    if (triggerPublish) {
+    if (triggerPublish && publishBranches) {
         echo "---- Will publish at least ${publishBranches}"
         // build(job: 'Conan-Docs-Publish', propagate: true, wait: true, parameters: [
         //     [$class: 'StringParameterValue', name: 'latest', value: currentReleaseBranch],
