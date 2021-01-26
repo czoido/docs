@@ -96,26 +96,26 @@ node('Linux') {
         stage("Check if the ci should publish ${currentReleaseBranch} branch") {
             if (env.BRANCH_NAME=="latest") {
                 publishBranches = "latest"
-                sh 'git log -5'
                 def latest_head = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                 sh "git fetch origin ${currentReleaseBranch}:${currentReleaseBranch} && git checkout ${currentReleaseBranch}"
-                sh 'git branch'
-                sh 'git log -5'
                 sh 'git config --global user.email "you@example.com" && git config --global user.name "Your Name" && git merge origin/latest'
-                sh 'git log -5'
                 def release_head = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                sh "git diff --name-only ${latest_head}..${release_head}"
                 def diff_branches = sh(script: "git diff --name-only ${latest_head}..${release_head} | wc -l", returnStdout: true).trim() as int
-                print diff_branches
                 if (diff_branches==0) {
                     // TODO: OPEN A PR TO THE currentReleaseBranch
                     echo "---- Will open a PR to ${currentReleaseBranch}"
                 }
+                else {
+                    echo "latest and ${currentReleaseBranch} are out of sync, won't open a PR to ${currentReleaseBranch} to merge changes"
+                }
             }
             else if (env.BRANCH_NAME=="${currentReleaseBranch}") {
                 def release_head = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                sh 'git fetch origin latest:latest && git checkout latest'
-                sh 'git merge origin/${currentReleaseBranch}'
-                def latest_head = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                sh "git fetch origin latest:latest && git checkout latest"
+                sh "git config --global user.email \"you@example.com\" && git config --global user.name \"Your Name\" && git merge origin/${currentReleaseBranch}"
+                def release_head = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                sh "git diff --name-only ${latest_head}..${release_head}"
                 def diff_branches = sh(script: "git diff --name-only ${latest_head}..${release_head} | wc -l", returnStdout: true).trim() as int
                 if (diff_branches==0) {
                     echo "---- Will publish the ${currentReleaseBranch}"
