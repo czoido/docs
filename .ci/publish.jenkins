@@ -5,7 +5,6 @@ node('Linux') {
     String prefix = params.prefix ?: "${BUILD_URL}artifact/gh-pages/"
     def branches
     stage('Check params') {
-        assert params.latest, 'Provide a name to the "latest" branch'
         assert params.branches_to_publish, 'Provide branches to publish separated with semicolons'
         if (params.publish) {
             assert params.prefix, 'Provide the prefix (base URL) if you are going to publish'
@@ -13,12 +12,11 @@ node('Linux') {
         branches = params.branches_to_publish.split(";")
         echo """
             Generate Conan docs webpage
-             - params.latest: ${params.latest}
              - params.publish: ${params.publish}
              - params.branches_to_publish: ${params.branches_to_publish}
              - params.build_all_branches: ${params.build_all_branches}
              - prefix: ${prefix}
-             - versions: latest (${params.latest}), ${branches.join(', ')}
+             - branches to publish: ${branches.join(', ')}
         """
     }
 
@@ -26,22 +24,22 @@ node('Linux') {
     def image = null
     stage('Build docker image') {
         // Build the docker image using the same commit as the current 'publish.jenkins' file
-        sh "git clone --branch ${params.latest} --depth 2 https://github.com/czoido/docs.git tmp"
+        sh "git clone --branch latest --depth 2 https://github.com/czoido/docs.git tmp"
         dir('tmp') {
             if (!build_all_branches) {
                 // we have to check if we have changed _themes/conan in the latest branch --> in that case we have
                 // rebuild the docs for all branches, also if this is triggered by the generation of a new Conan
-                // version we should publish all the documentation, if this is triggered by a new release 
+                // version we should publish all the documentation, we detect this if the changelog changes (have to improve this)
                 def current_commit = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
                 def previous_commit = sh(script: "git rev-parse HEAD^1", returnStdout: true).trim()
                 // check if this commit modified the _themes folder
-                def count = sh(script: "git diff --name-only ${previous_commit}..${current_commit} | sort -u | uniq | grep _themes | wc -l", returnStdout: true).trim() as int
+                def count = sh(script: "git diff --name-only ${previous_commit}..${current_commit} | sort -u | uniq | grep -e _themes -e changelog.rst | wc -l", returnStdout: true).trim() as int
                 if (count>0) {
                     build_all_branches = true
-                    echo "No changes detected for docs templates, will build only branches ${branches.join(', ')}"
+                    echo "Docs template changes or new version detected. Build all branches."
                 }
                 else {
-                    echo "Docs template changes detected. Build all branches"
+                    echo "No changes detected for docs templates, will build only branches ${branches.join(', ')}"
                 }
             }
             image = docker.build('conan-docs', '-f .ci/Dockerfile .')  // It should cache the image
@@ -58,11 +56,18 @@ node('Linux') {
     Map<String, String> versionsAll = [:]
     for (ver = minMinor; ver<=latestMinor; ver++) {
         versionsAll["release/1.${ver}"] = "1.${ver}"
-    }        
+    }
+    versionsAll['latest'] = 'latest'
+
     if (!build_all_branches) {
         branches.each { branch ->
-            version = branch.split("/")[1]
-            versionsToBuild[branch] = version
+            if (branch!="latest") {
+                version = branch.split("/")[1]
+                versionsToBuild[branch] = version
+            }
+            else {
+                versionsToBuild['latest'] = 'latest'
+            }
         }
     }
     else {
@@ -80,15 +85,11 @@ node('Linux') {
                 sh "git fetch origin ${branchName}:${branchName}"
                 sh "git worktree add ../${folderName} ${branchName}"
             }
-            sh "git fetch origin ${params.latest}:latest"
-            sh "git worktree add ../latest latest"
             // Prepare the worktree for gh-pages too
             sh 'git fetch origin gh-pages:gh-pages'
             sh 'git worktree add ../gh-pages gh-pages'
         }
     }
-
-    versionsToBuild['latest'] = 'latest'
 
     Map parallelJobs = [:]
     versionsToBuild.each { key, value ->
@@ -120,7 +121,7 @@ node('Linux') {
         }
     }
 
-    stage('Generate all releases') {
+    stage('Generate releases') {
         parallelJobs.failFast = true
         parallel parallelJobs
     }
@@ -147,14 +148,14 @@ node('Linux') {
         echo "Inspect generated webpage at ${BUILD_URL}artifact/gh-pages/index.html"
     }
     
-    dir('gh-pages') {
-        sh 'git add .'
-        sh 'git config user.email "conanci@jfrog.com"'
-        sh 'git config user.name "ConanCI bot"'
-        sh "git commit -m \"Automatic deploy (build number ${BUILD_NUMBER})\""
-        withCredentials([usernamePassword(credentialsId: 'conanci-gh-token-stg', usernameVariable: 'GH_USER', passwordVariable: 'GH_PASS')]) {
-            sh "git remote add origin-pages https://$GH_USER:$GH_PASS@github.com/czoido/docs.git"
-            sh 'git push --quiet origin-pages gh-pages'
-        }
-    }
+    // dir('gh-pages') {
+    //     sh 'git add .'
+    //     sh 'git config user.email "conanci@jfrog.com"'
+    //     sh 'git config user.name "ConanCI bot"'
+    //     sh "git commit -m \"Automatic deploy (build number ${BUILD_NUMBER})\""
+    //     withCredentials([usernamePassword(credentialsId: 'conanci-gh-token-stg', usernameVariable: 'GH_USER', passwordVariable: 'GH_PASS')]) {
+    //         sh "git remote add origin-pages https://$GH_USER:$GH_PASS@github.com/czoido/docs.git"
+    //         sh 'git push --quiet origin-pages gh-pages'
+    //     }
+    // }
 }
