@@ -6,6 +6,7 @@ node('Linux') {
     def branches
     stage('Check params') {
         assert params.branches_to_publish, 'Provide branches to publish separated with semicolons'
+        assert params.current_release_branch, 'Provide branches to publish separated with semicolons'
         if (params.publish) {
             assert params.prefix, 'Provide the prefix (base URL) if you are going to publish'
         }
@@ -49,7 +50,7 @@ node('Linux') {
 
     // check this for 2.0 docs
     def minVersionToPublish = "1.3"
-    def latestVersion = params.latest.split("/")[1]
+    def latestVersion = params.current_release_branch.split("/")[1]
     def minMinor = minVersionToPublish.split("\\.")[1].toInteger()
     def latestMinor = latestVersion.split("\\.")[1].toInteger()
     Map<String, String> versionsToBuild = [:]
