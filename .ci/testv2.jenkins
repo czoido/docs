@@ -103,8 +103,7 @@ node('Linux') {
                 sh "git diff --name-only ${latest_head}..${release_head}"
                 def diff_branches = sh(script: "git diff --name-only ${latest_head}..${release_head} | wc -l", returnStdout: true).trim() as int
                 if (diff_branches==0) {
-                    // TODO: OPEN A PR TO THE currentReleaseBranch
-                    echo "---- Will open a PR to ${currentReleaseBranch}"
+                    // Open a PR to the current release branch
                     sh 'git checkout latest'
                     withCredentials([usernamePassword(credentialsId: 'conanci-gh-token-stg', usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
                         sh "python .ci/create_pr.py --repo ${docsRepo} --base ${currentReleaseBranch} --head latest"
