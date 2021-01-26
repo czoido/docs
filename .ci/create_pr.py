@@ -13,12 +13,12 @@ if __name__ == "__main__":
     args = parser.parse_args()
     print("Create a PR to {}, to merge {} in {}".format(
         args.repo, args.head, args.base))
-    # GH_TOKEN = os.getenv("GH_TOKEN")
-    # gh = Github(GH_TOKEN)
-    # repo = gh.get_repo(args.repo)
-    # pr = repo.create_pull(
-    #     title="[ci-bot] Updating ${} to merge changes in ${}".format(
-    #         args.base, args.head),
-    #     body="",
-    #     head=args.head,
-    #     base=args.base)
+    GH_TOKEN = os.getenv("GH_TOKEN")
+    gh = Github(GH_TOKEN)
+    repo = gh.get_repo(args.repo)
+    pr = repo.create_pull(
+        title="[ci-bot] Updating ${} to merge changes in ${}".format(
+            args.base, args.head),
+        body="",
+        head=args.head,
+        base=args.base)
