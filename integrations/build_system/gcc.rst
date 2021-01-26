@@ -10,7 +10,7 @@ Compilers on command line
 =========================
 
 The **compiler_args** generator creates a file named ``conanbuildinfo.args`` containing command
-line arguments to invoke ``gcc``, ``clang`` or ``cl`` (Visual Studio) compiler. Fix
+line arguments to invoke ``gcc``, ``clang`` or ``cl`` (Visual Studio) compiler. Fix one thing.
 
 Now we are going to compile the :ref:`getting started<getting_started>` example using **compiler_args** instead of the **cmake** generator.
 
