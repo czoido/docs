@@ -17,7 +17,7 @@ if __name__ == "__main__":
     gh = Github(GH_TOKEN)
     repo = gh.get_repo(args.repo)
     pr = repo.create_pull(
-        title="[ci-bot] Updating ${} to merge changes in ${}".format(
+        title="[ci-bot] Updating {} to merge changes in {}".format(
             args.base, args.head),
         body="",
         head=args.head,
