@@ -20,7 +20,7 @@ Add ``conan_basic_setup`` to ``CONFIG`` and include the file in your existing pr
     include(conanbuildinfo.pri)
 
 This will include all the statements in *conanbuildinfo.pri* in your project. Include paths, libraries, defines, etc. will be set up
-for all requirements you have defined as dependencies in a *conanfile.txt*.
+for all requirements you have defined as dependencies in a *conanfile.txt*.dasdsdadasdasdsad
 
 If you'd prefer to manually add the variables for each dependency, you can do so by skipping the ``CONFIG`` statement and
 only including *conanbuildinfo.pri*:
