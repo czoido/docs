@@ -6,7 +6,8 @@ node('Linux') {
     def branches
     stage('Check params') {
         assert params.branches_to_publish, 'Provide branches to publish separated with semicolons'
-        assert params.current_release_branch, 'Provide branches to publish separated with semicolons'
+        assert params.current_release_branch, 'Provide branch for docs of current Conan version'
+        assert params.current_release_branch, 'Provide branch for docs of current Conan version'
         if (params.publish) {
             assert params.prefix, 'Provide the prefix (base URL) if you are going to publish'
         }
@@ -17,6 +18,7 @@ node('Linux') {
              - params.branches_to_publish: ${params.branches_to_publish}
              - params.build_all_branches: ${params.build_all_branches}
              - prefix: ${prefix}
+             - docs_repo: ${params.docs_repo}
              - branches to publish: ${branches.join(', ')}
         """
     }
@@ -27,56 +29,62 @@ node('Linux') {
         // Build the docker image using the same commit as the current 'publish.jenkins' file
         sh "git clone --branch latest --depth 2 https://github.com/czoido/docs.git tmp"
         dir('tmp') {
-            if (!build_all_branches) {
-                // we have to check if we have changed _themes/conan in the latest branch --> in that case we have
-                // rebuild the docs for all branches, also if this is triggered by the generation of a new Conan
-                // version we should publish all the documentation, we detect this if the changelog changes (have to improve this)
-                def current_commit = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
-                def previous_commit = sh(script: "git rev-parse HEAD^1", returnStdout: true).trim()
-                // check if this commit modified the _themes folder
-                def count = sh(script: "git diff --name-only ${previous_commit}..${current_commit} | sort -u | uniq | grep -e _themes -e changelog.rst | wc -l", returnStdout: true).trim() as int
-                if (count>0) {
-                    build_all_branches = true
-                    echo "Docs template changes or new version detected. Build all branches."
-                }
-                else {
-                    echo "No changes detected for docs templates, will build only branches ${branches.join(', ')}"
+            if ("latest" in branches) {
+                if (!build_all_branches) {
+                    // we have to check if we have changed _themes/conan in the latest branch --> in that case we have
+                    // rebuild the docs for all branches, also if this is triggered by the generation of a new Conan
+                    // version we should publish all the documentation, we detect this if the changelog changes (have to improve this)
+                    def current_commit = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
+                    def previous_commit = sh(script: "git rev-parse HEAD^1", returnStdout: true).trim()
+                    // check if this commit modified the _themes folder
+                    def count = sh(script: "git diff --name-only ${previous_commit}..${current_commit} | sort -u | uniq | grep -e _themes -e changelog.rst | wc -l", returnStdout: true).trim() as int
+                    if (count>0) {
+                        build_all_branches = true
+                        echo "Docs template changes or new version detected. Build all branches."
+                    }
+                    else {
+                        echo "No changes detected for docs templates, will build only branches ${branches.join(', ')}"
+                    }
                 }
             }
+
             image = docker.build('conan-docs', '-f .ci/Dockerfile .')  // It should cache the image
             deleteDir()
         }
     }
 
-    // check this for 2.0 docs
-    def minVersionToPublish = "1.3"
-    def latestVersion = params.current_release_branch.split("/")[1]
-    def minMinor = minVersionToPublish.split("\\.")[1].toInteger()
-    def latestMinor = latestVersion.split("\\.")[1].toInteger()
-    Map<String, String> versionsToBuild = [:]
-    Map<String, String> versionsAll = [:]
-    for (ver = minMinor; ver<=latestMinor; ver++) {
-        versionsAll["release/1.${ver}"] = "1.${ver}"
-    }
-    versionsAll['latest'] = 'latest'
+    stage('Check branches to build') {
+        // check this for 2.0 docs
+        def minVersionToPublish = "1.3"
+        def latestVersion = params.current_release_branch.split("/")[1]
+        def minMinor = minVersionToPublish.split("\\.")[1].toInteger()
+        def latestMinor = latestVersion.split("\\.")[1].toInteger()
+        Map<String, String> versionsToBuild = [:]
+        Map<String, String> versionsAll = [:]
+        for (ver = minMinor; ver<=latestMinor; ver++) {
+            versionsAll["release/1.${ver}"] = "1.${ver}"
+        }
+        versionsAll['latest'] = 'latest'
 
-    if (!build_all_branches) {
-        branches.each { branch ->
-            if (branch!="latest") {
-                version = branch.split("/")[1]
-                versionsToBuild[branch] = version
-            }
-            else {
-                versionsToBuild['latest'] = 'latest'
+        if (!build_all_branches) {
+            branches.each { branch ->
+                if (branch!="latest") {
+                    version = branch.split("/")[1]
+                    versionsToBuild[branch] = version
+                }
+                else {
+                    versionsToBuild['latest'] = 'latest'
+                }
             }
         }
-    }
-    else {
-        versionsToBuild = versionsAll
-    }
-
-    print versionsToBuild
-    print versionsAll
+        else {
+            versionsToBuild = versionsAll
+        }
+        echo "versionsAll:"
+        print versionsAll        
+        echo "versionsToBuild:"
+        print versionsToBuild
+    } 
 
     stage('Prepare sources as worktrees') { // Do this sequentially
         sh 'git clone --bare https://github.com/czoido/docs.git src'
@@ -113,11 +121,11 @@ node('Linux') {
                     sh "sphinx-build -W -b html -d ${folderName}/_build/.doctrees ${folderName}/ gh-pages/en/${folderName}"
                 }
 
-                // stage('PDF') {
-                //     sh "sphinx-build -W -b latex -d ${folderName}/_build/.doctrees ${folderName}/ ${folderName}/_build/latex"
-                //     sh "make -C ${folderName}/_build/latex all-pdf"
-                //     sh "cp ${folderName}/_build/latex/conan.pdf gh-pages/en/${folderName}/conan.pdf"
-                // }
+                stage('PDF') {
+                    sh "sphinx-build -W -b latex -d ${folderName}/_build/.doctrees ${folderName}/ ${folderName}/_build/latex"
+                    sh "make -C ${folderName}/_build/latex all-pdf"
+                    sh "cp ${folderName}/_build/latex/conan.pdf gh-pages/en/${folderName}/conan.pdf"
+                }
             }
         }
     }
@@ -149,14 +157,14 @@ node('Linux') {
         echo "Inspect generated webpage at ${BUILD_URL}artifact/gh-pages/en/latest/index.html"
     }
     
-    // dir('gh-pages') {
-    //     sh 'git add .'
-    //     sh 'git config user.email "conanci@jfrog.com"'
-    //     sh 'git config user.name "ConanCI bot"'
-    //     sh "git commit -m \"Automatic deploy (build number ${BUILD_NUMBER})\""
-    //     withCredentials([usernamePassword(credentialsId: 'conanci-gh-token-stg', usernameVariable: 'GH_USER', passwordVariable: 'GH_PASS')]) {
-    //         sh "git remote add origin-pages https://$GH_USER:$GH_PASS@github.com/czoido/docs.git"
-    //         sh 'git push --quiet origin-pages gh-pages'
-    //     }
-    // }
+    dir('gh-pages') {
+        sh 'git add .'
+        sh 'git config user.email "conanci@jfrog.com"'
+        sh 'git config user.name "ConanCI bot"'
+        sh "git commit -m \"Automatic deploy (build number ${BUILD_NUMBER})\""
+        withCredentials([usernamePassword(credentialsId: 'conanci-gh-token-stg', usernameVariable: 'GH_USER', passwordVariable: 'GH_PASS')]) {
+            sh "git remote add origin-pages https://$GH_USER:$GH_PASS@github.com/${params.docs_repo}.git"
+            sh 'git push --quiet origin-pages gh-pages'
+        }
+    }
 }
