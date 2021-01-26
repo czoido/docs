@@ -98,7 +98,7 @@ node('Linux') {
                 publishBranches = "latest"
                 def latest_head = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                 sh "git fetch origin ${currentReleaseBranch}:${currentReleaseBranch} && git checkout ${currentReleaseBranch}"
-                def diff_branches = sh(script: "git diff --name-only latest..${currentReleaseBranch} | wc -l", returnStdout: true).trim() as int
+                def diff_branches = sh(script: "git diff --name-only origin/latest..${currentReleaseBranch} | wc -l", returnStdout: true).trim() as int
                 if (diff_branches!=0) {
                     sh 'git config --global user.email "you@example.com" && git config --global user.name "Your Name" && git merge origin/latest || true'
                     def release_head = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
@@ -119,7 +119,7 @@ node('Linux') {
             else if (env.BRANCH_NAME=="${currentReleaseBranch}") {
                 def release_head = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                 sh "git fetch origin latest:latest && git checkout latest"
-                def diff_branches = sh(script: "git diff --name-only latest..${currentReleaseBranch} | wc -l", returnStdout: true).trim() as int
+                def diff_branches = sh(script: "git diff --name-only origin/latest..${currentReleaseBranch} | wc -l", returnStdout: true).trim() as int
                 if (diff_branches==0) {
                     sh "git config --global user.email \"you@example.com\" && git config --global user.name \"Your Name\" && git merge origin/${currentReleaseBranch} || true"
                     def latest_head = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
