@@ -6,7 +6,7 @@
 .. note::
 
    The new, experimental integration with CMake can be found in :ref:`conan_tools_cmake`. This is the integration that will
-   become the standard one in Conan 2.0, and the below generators and integrations will be deprecated and removed.
+   become the standard one in Conan 2.0, and the below generators and integrations will be deprecated and removed. sdadad
 
 
 Conan can be integrated with CMake using different generators, build helpers and custom *findXXX.cmake* files:
