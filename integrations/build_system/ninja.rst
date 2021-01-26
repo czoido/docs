@@ -5,7 +5,7 @@ Ninja, NMake, Borland
 
 These build systems still don't have a Conan generator for using them natively. However, if
 you are using CMake, you can instruct Conan to use them instead of the default generator
-(typically ``Unix Makefiles``).
+(typically ``Unix Makefiles``). d sadadssdasdda
 
 Set it globally in your *conan.conf* file:
 
