@@ -22,9 +22,6 @@ def getConanVersion(String versionLine) {
 }
 
 node('Linux') {
-
-    def publishBranches = "latest"
-
     // get the default branch
     def verUrl = "https://raw.githubusercontent.com/conan-io/conan/develop/conans/__init__.py"
     def versionLine = sh(returnStdout: true, script: "curl '${verUrl}' | grep __version__").trim()
@@ -34,20 +31,33 @@ node('Linux') {
     def devBranch = getBranchName(devConanVersion)
 
     // get the branch of the latest published Conan version
-    // if we merge something to latest, we also want to make sure
-    // that we are merging back those changes to the current release branch
     def currentConanVersion = getPrevVer(devConanVersion)
     def currentReleaseBranch = getBranchName(currentConanVersion)
 
-    boolean triggerPublish = env.BRANCH_NAME == "latest"
+    echo "---- Conan dev branch: ${devBranch}"
+    echo "---- Conan release branch: ${currentReleaseBranch}"
+    echo "---- Merging to branch: ${env.BRANCH_NAME}"
 
-    echo devBranch
-    echo currentReleaseBranch
-    echo env.BRANCH_NAME
+    boolean triggerPublish = false
 
-    // stage('Clone sources') {
-    //     checkout scm
-    // }
+    if (env.BRANCH_NAME=="${currentReleaseBranch}" || env.BRANCH_NAME=="latest") {
+        triggerPublish = true
+        echo "---- Will check if we have to publish"
+    }
+    else {
+        echo "---- Branch name does not match"
+    }
+
+
+    stage('Clone sources') {
+        checkout([
+            $class: 'GitSCM',
+            branches: scm.branches,
+            doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+            extensions: scm.extensions,
+            userRemoteConfigs: scm.userRemoteConfigs
+        ])
+    }
 
     // def image = null
     // stage('Build docker image') {
@@ -81,61 +91,50 @@ node('Linux') {
     //     }
     // }
 
-    // We have to check now the branches that we want to publish
-    // if we are merging back changes from the current release branch
-    // and we are not in the middle of developing a patch version
-    // latest and release branch should be equal (but we have to exclude from the check
-    // thing from _static, _themes, _templates...) if that comparison returns true, we publish
-    // the latest branch and also the current release branch
-    // 1. check that the commit we are merging is in the current release branch
-    // 2. check that latest and current release branch are "equal"
-    // 1 && 2 --> publish latest and release branch
-
+    def publishBranches = ""
     if (triggerPublish) {
-        stage("Check if the ci should also publish ${currentReleaseBranch} branch") {
-            // check if latest branch and current release branch have changes in documentation: rst
-            sh "git clone --branch ${currentReleaseBranch} --depth 2 https://github.com/czoido/docs.git src"
-            dir("src") {
-                def release_last_commit = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
-                echo release_last_commit
-                sh 'git fetch origin latest:latest && git checkout latest'
-                def current_commit = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
-                def prev_commit = sh(script: 'git rev-parse HEAD^1', returnStdout: true).trim()
-                def changes_prev_release = sh(script: "git diff --name-only ${release_last_commit}..${prev_commit} | wc -l", returnStdout: true).trim() as int
-                print changes_prev_release
-                if (changes_prev_release==0) {
-                    // release and latest have the same content, we can open a PR to release branch to add
-                    // this commit if the commit is already in release branch, we are merging back the release branch
-                    // so then publish
-                    def commit_in_branch = sh(script: "git branch --contains ${current_commit} | grep ${currentReleaseBranch} | wc -l", returnStdout: true).trim() as int
-                    if (commit_in_branch>0) {
-                        echo """
-                            We are merging the release branch to latest, let's rebuild and publish
-                        """
-                        publishBranches = publishBranches + ";" + currentReleaseBranch
-                    }
-                    else {
-                        // TODO open a PR to merge the latest merge to the release branch
-                        echo "Do not publish ${currentReleaseBranch} but open a PR to ${currentReleaseBranch} to merge the changes"
-                    }
-
+        stage("Check if the ci should publish ${currentReleaseBranch} branch") {
+            if (env.BRANCH_NAME=="latest") {
+                publishBranches = "latest"
+                sh 'git log -5'
+                def latest_head = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                sh "git fetch origin ${currentReleaseBranch}:${currentReleaseBranch} && git checkout ${currentReleaseBranch}"
+                sh 'git branch'
+                sh 'git log -5'
+                sh 'git merge origin/latest'
+                sh 'git log -5'
+                def release_head = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                def diff_branches = sh(script: "git diff --name-only ${latest_head}..${release_head} | wc -l", returnStdout: true).trim() as int
+                print diff_branches
+                if (diff_branches==0) {
+                    // TODO: OPEN A PR TO THE currentReleaseBranch
+                    echo "---- Will open a PR to ${currentReleaseBranch}"
                 }
-                else {
-                    echo "Latest and ${currentReleaseBranch} not in sync, not publish release branch or open a PR"
-                }
-              
             }
-
+            else if (env.BRANCH_NAME=="${currentReleaseBranch}") {
+                def release_head = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                sh 'git fetch origin latest:latest && git checkout latest'
+                sh 'git merge origin/${currentReleaseBranch}'
+                def latest_head = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
+                def diff_branches = sh(script: "git diff --name-only ${latest_head}..${release_head} | wc -l", returnStdout: true).trim() as int
+                if (diff_branches==0) {
+                    echo "---- Will publish the ${currentReleaseBranch}"
+                    publishBranches = "${currentReleaseBranch}"
+                }
+            }
         }
     }
 
-    echo publishBranches
-    // if (triggerPublish) {
-    //     build(job: 'Conan-Docs-Publish', propagate: true, wait: true, parameters: [
-    //         [$class: 'StringParameterValue', name: 'latest', value: currentReleaseBranch],
-    //         [$class: 'StringParameterValue', name: 'branches_to_publish', value: publishBranches],
-    //         [$class: 'StringParameterValue', name: 'prefix', value: 'https://czoido.github.io/docs/'],
-    //         [$class: 'BooleanParameterValue', name: 'publish', value: true]
-    //     ])
-    // }
+    if (triggerPublish) {
+        echo "---- Will publish at least ${publishBranches}"
+        // build(job: 'Conan-Docs-Publish', propagate: true, wait: true, parameters: [
+        //     [$class: 'StringParameterValue', name: 'latest', value: currentReleaseBranch],
+        //     [$class: 'StringParameterValue', name: 'branches_to_publish', value: publishBranches],
+        //     [$class: 'StringParameterValue', name: 'prefix', value: 'https://czoido.github.io/docs/'],
+        //     [$class: 'BooleanParameterValue', name: 'publish', value: true]
+        // ])
+    }
+    else {
+        echo "---- Publish job will not be triggered"
+    }
 }
