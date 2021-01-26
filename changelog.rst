@@ -25,6 +25,7 @@ Check https://github.com/conan-io/conan for issues and more details about develo
 1.33.0 (20-Jan-2021)
 --------------------
 
+- This should be a new version, but is a change on the changelog
 - Feature: Introducing a new ``[conf]`` section in profiles that allows a more systematic configuration management for recipes and helpers (build helpers, toolchains). Introducing a new ``conan_conf.txt`` cache configuration file that contains configuration definition with the same syntax as in profiles. `#8266 <https://github.com/conan-io/conan/pull/8266>`_ . Docs `here <https://github.com/conan-io/docs/pull/1993>`__
 - Feature: Add Apple Catalyst support (as new os.subsystem) `#8264 <https://github.com/conan-io/conan/pull/8264>`_ . Docs `here <https://github.com/conan-io/docs/pull/1983>`__
 - Feature: Add os.sdk sub-settings for Apple `#8263 <https://github.com/conan-io/conan/pull/8263>`_ . Docs `here <https://github.com/conan-io/docs/pull/1981>`__
