@@ -22,6 +22,12 @@ def getConanVersion(String versionLine) {
 }
 
 node('Linux') {
+
+    def ghUserName = "czoido"
+    def repoName = "docs"
+    def publishDocsUrl = "https://${ghUserName}.github.io/${repoName}/"
+    def docsRepo = '${ghUserName}/${repoName}'
+
     // get the default branch
     def verUrl = "https://raw.githubusercontent.com/conan-io/conan/develop/conans/__init__.py"
     def versionLine = sh(returnStdout: true, script: "curl '${verUrl}' | grep __version__").trim()
@@ -105,6 +111,10 @@ node('Linux') {
                 if (diff_branches==0) {
                     // TODO: OPEN A PR TO THE currentReleaseBranch
                     echo "---- Will open a PR to ${currentReleaseBranch}"
+                    sh 'git checkout latest'
+                    withCredentials([usernamePassword(credentialsId: 'conanci-gh-token-stg', usernameVariable: 'GH_USER', passwordVariable: 'GH_TOKEN')]) {
+                        sh "python .ci/create_pr.py --repo ${docsRepo} --base ${currentReleaseBranch} --head latest"
+                    }
                 }
                 else {
                     echo "latest and ${currentReleaseBranch} are out of sync, won't open a PR to ${currentReleaseBranch} to merge changes"
@@ -133,7 +143,7 @@ node('Linux') {
         build(job: 'Conan-Docs-Publish', propagate: true, wait: true, parameters: [
             [$class: 'StringParameterValue', name: 'branches_to_publish', value: publishBranches],
             [$class: 'StringParameterValue', name: 'current_release_branch', value: currentReleaseBranch],
-            [$class: 'StringParameterValue', name: 'prefix', value: 'https://czoido.github.io/docs/'],
+            [$class: 'StringParameterValue', name: 'prefix', value: "${publishDocsUrl}"],
             [$class: 'BooleanParameterValue', name: 'publish', value: true]
         ])
     }
