@@ -26,7 +26,7 @@ node('Linux') {
     def ghUserName = "czoido"
     def repoName = "docs"
     def publishDocsUrl = "https://${ghUserName}.github.io/${repoName}/"
-    def docsRepo = '${ghUserName}/${repoName}'
+    def docsRepo = "${ghUserName}\\/${repoName}"
 
     // get the default branch
     def verUrl = "https://raw.githubusercontent.com/conan-io/conan/develop/conans/__init__.py"
