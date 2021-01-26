@@ -16,7 +16,7 @@ Add ``conanbuildinfo.qbs`` as a reference on the project level and a Depends ite
    import qbs
 
    Project {
-      references: ["conanbuildinfo.qbs"]
+      references: ["conanbuildinfo.qbs"]dasdasda
       Product {
            type: "application"
            consoleApplication: true

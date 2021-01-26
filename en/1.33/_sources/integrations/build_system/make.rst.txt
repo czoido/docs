@@ -12,7 +12,7 @@ Refer to the links above for more detail about each of them. Here we provide a
 high-level explanation of how these integrations are meant to be used. 
 
 If you are using ``Makefile`` to build your project you can use one or both of
-these depending on your needs.
+these depending on your needs. Fixing something
 
 The ``make`` generator outputs all the variables related to package dependencies
 into a file which is named *conanbuildinfo.mak*. The ``make`` toolchain outputs

@@ -39,6 +39,9 @@
   
 
   
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../_static/css/search.css" type="text/css" />
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
@@ -52,18 +55,18 @@
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-53TFLK7');</script>
+})(window,document,'script','dataLayer','GTM-WK44ZFM');</script>
 <!-- End Google Tag Manager -->
  
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-68594724-3"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=GTM-WK44ZFM"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-68594724-3');
+  gtag('config', 'GTM-WK44ZFM');
 </script>
 
 
@@ -71,7 +74,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
   
-  <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -228,6 +230,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
       
+      <script>
+        var reldir = "../index.html".replace("index.html","").replace("#", "");
+      </script>
       <div class="wy-nav-content">
         <div class="rst-content">
           
@@ -246,7 +251,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<div role="navigation" aria-label="breadcrumbs navigation">
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation" id="breadcrumbs">
 
   <ul class="wy-breadcrumbs">
     
@@ -270,8 +282,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </ul>
 
   
-  <hr/>
 </div>
+          <!--<select id="search" name="state" multiple="true" onchange="window.location = reldir + this.value;" style="width:90%"></select>
+          <hr/>-->
+          <!--<div class="admonition important"> Join the <a href=https://blog.conan.io/2020/07/28/Launching-Conan-2.0-Tribe.html>Conan 2.0 Tribe</a> and contribute to define the next Conan 2.0 major version</div>-->
+          <div class="admonition important">
+            <p class="admonition-title">Announcement</p>
+            <p>Check out the new free <a
+            href=https://blog.conan.io/2020/09/24/New-conan-training-series.html>Conan
+            training courses on JFrog Academy</a>!
+          </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
@@ -295,8 +315,8 @@ overwritten with the environment variable <a class="reference internal" href="en
 </div>
 <div class="section" id="tools-vcvars-command">
 <span id="id3"></span><h2>tools.vcvars_command()<a class="headerlink" href="#tools-vcvars-command" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vcvars_command</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">arch</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">compiler_version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">vcvars_ver</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                   <span class="n">winsdk_version</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vcvars_command</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">arch</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compiler_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">vcvars_ver</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                   <span class="n">winsdk_version</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Returns, for given settings, the command that should be called to load the Visual Studio environment variables for a certain Visual Studio
@@ -338,8 +358,8 @@ variable <code class="docutils literal notranslate"><span class="pre">PreferredT
 </div>
 <div class="section" id="tools-vcvars-dict">
 <span id="id4"></span><h2>tools.vcvars_dict()<a class="headerlink" href="#tools-vcvars-dict" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vcvars_dict</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">arch</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">compiler_version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">filter_known_paths</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-            <span class="n">vcvars_ver</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">winsdk_version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">only_diff</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vcvars_dict</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">arch</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compiler_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filter_known_paths</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="n">vcvars_ver</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">winsdk_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">only_diff</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Returns a dictionary with the variables set by the <a class="reference internal" href="#tools-vcvars-command"><span class="std std-ref">tools.vcvars_command()</span></a> that can be directly applied to
@@ -369,7 +389,7 @@ the new values will be returned, as a list.</li>
 </div>
 <div class="section" id="tools-vcvars">
 <h2>tools.vcvars()<a class="headerlink" href="#tools-vcvars" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vcvars</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">arch</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">compiler_version</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">filter_known_paths</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">vcvars</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">arch</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">compiler_version</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filter_known_paths</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -392,9 +412,9 @@ the new values will be returned, as a list.</li>
 <p class="first admonition-title">Warning</p>
 <p class="last">This tool is deprecated and will be removed in Conan 2.0. Use <a class="reference internal" href="build_helpers/visual_studio.html#msbuild"><span class="std std-ref">MSBuild()</span></a> build helper instead.</p>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">build_sln_command</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">sln_path</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">upgrade_project</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">build_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                      <span class="n">arch</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">toolset</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">platforms</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                      <span class="n">definitions</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">build_sln_command</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">sln_path</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">upgrade_project</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">build_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">arch</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">toolset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">platforms</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">definitions</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Returns the command to call <cite>devenv</cite> and <cite>msbuild</cite> to build a Visual Studio project. It’s recommended to use it with
@@ -454,8 +474,8 @@ Use value of None to set compiler definition with no value.</p>
 <p class="first admonition-title">Warning</p>
 <p class="last">This tool is deprecated and will be removed in Conan 2.0. Use <a class="reference internal" href="build_helpers/visual_studio.html#msbuild"><span class="std std-ref">MSBuild()</span></a>.get_command() instead.</p>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">msvc_build_command</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">sln_path</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">upgrade_project</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">build_type</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                       <span class="n">arch</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">force_vcvars</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">toolset</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">platforms</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">msvc_build_command</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">sln_path</span><span class="p">,</span> <span class="n">targets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">upgrade_project</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">build_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                       <span class="n">arch</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parallel</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">force_vcvars</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">toolset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">platforms</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Returns a string with a joint command consisting in setting the environment variables via <code class="docutils literal notranslate"><span class="pre">vcvars.bat</span></code> with the above
@@ -471,7 +491,7 @@ Use value of None to set compiler definition with no value.</p>
 </div>
 <div class="section" id="tools-unzip">
 <span id="id5"></span><h2>tools.unzip()<a class="headerlink" href="#tools-unzip" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">unzip</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">keep_permissions</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">unzip</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">keep_permissions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Function mainly used in <code class="docutils literal notranslate"><span class="pre">source()</span></code>, but could be used in <code class="docutils literal notranslate"><span class="pre">build()</span></code> in special cases, as when retrieving pre-built binaries from the
@@ -488,7 +508,7 @@ them into the given destination folder (the current one by default).</p>
 <p>You can keep the permissions of the files using the <code class="docutils literal notranslate"><span class="pre">keep_permissions=True</span></code> parameter.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">conans</span> <span class="kn">import</span> <span class="n">tools</span>
 
-<span class="n">tools</span><span class="o">.</span><span class="n">unzip</span><span class="p">(</span><span class="s2">&quot;myfile.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;myfolder&quot;</span><span class="p">,</span> <span class="n">keep_permissions</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">tools</span><span class="o">.</span><span class="n">unzip</span><span class="p">(</span><span class="s2">&quot;myfile.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;myfolder&quot;</span><span class="p">,</span> <span class="n">keep_permissions</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Use <code class="docutils literal notranslate"><span class="pre">pattern=None</span></code> if you want to filter specific files and paths to decompress from the archive.</p>
@@ -516,7 +536,7 @@ shell-style wildcard. See <a class="reference external" href="https://docs.pytho
 </div>
 <div class="section" id="tools-untargz">
 <span id="id6"></span><h2>tools.untargz()<a class="headerlink" href="#tools-untargz" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">untargz</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">untargz</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">destination</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Extract <em>.tar.gz</em> files (or in the family). This is the function called by the previous <code class="docutils literal notranslate"><span class="pre">unzip()</span></code> for the matching extensions, so
@@ -543,8 +563,8 @@ shell-style wildcard. See <a class="reference external" href="https://docs.pytho
 </div>
 <div class="section" id="tools-get">
 <span id="id8"></span><h2>tools.get()<a class="headerlink" href="#tools-get" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">filenname</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">md5</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">sha1</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">sha256</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">keep_permissions</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-        <span class="n">verify</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">retry_wait</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">filenname</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">md5</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">sha1</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">sha256</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">keep_permissions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">verify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">retry_wait</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Just a high level wrapper for download, unzip, and remove the temporary zip file once unzipped. You can pass hash checking parameters:
@@ -582,7 +602,7 @@ directly to the <code class="docutils literal notranslate"><span class="pre">req
 </div>
 <div class="section" id="tools-get-env">
 <span id="id9"></span><h2>tools.get_env()<a class="headerlink" href="#tools-get-env" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_env</span><span class="p">(</span><span class="n">env_key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">environment</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_env</span><span class="p">(</span><span class="n">env_key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">environment</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Parses an environment and cast its value against the <strong>default</strong> type passed as an argument. Following Python conventions, returns
@@ -597,7 +617,7 @@ directly to the <code class="docutils literal notranslate"><span class="pre">req
 <span class="n">tools</span><span class="o">.</span><span class="n">get_env</span><span class="p">(</span><span class="s2">&quot;TEST_ENV_NOT_DEFINED&quot;</span><span class="p">)</span> <span class="c1"># returns None, TEST_ENV_NOT_DEFINED not declared</span>
 <span class="n">tools</span><span class="o">.</span><span class="n">get_env</span><span class="p">(</span><span class="s2">&quot;TEST_ENV_NOT_DEFINED&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="c1"># returns [], TEST_ENV_NOT_DEFINED not declared</span>
 <span class="n">tools</span><span class="o">.</span><span class="n">get_env</span><span class="p">(</span><span class="s2">&quot;TEST_ENV&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">)</span> <span class="c1"># returns &quot;1&quot;</span>
-<span class="n">tools</span><span class="o">.</span><span class="n">get_env</span><span class="p">(</span><span class="s2">&quot;TEST_ENV&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span> <span class="c1"># returns True (default value is boolean)</span>
+<span class="n">tools</span><span class="o">.</span><span class="n">get_env</span><span class="p">(</span><span class="s2">&quot;TEST_ENV&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span> <span class="c1"># returns True (default value is boolean)</span>
 <span class="n">tools</span><span class="o">.</span><span class="n">get_env</span><span class="p">(</span><span class="s2">&quot;TEST_ENV&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1"># returns 1</span>
 <span class="n">tools</span><span class="o">.</span><span class="n">get_env</span><span class="p">(</span><span class="s2">&quot;TEST_ENV&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span> <span class="c1"># returns 1.0</span>
 <span class="n">tools</span><span class="o">.</span><span class="n">get_env</span><span class="p">(</span><span class="s2">&quot;TEST_ENV&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="c1"># returns [&quot;1&quot;]</span>
@@ -615,8 +635,8 @@ directly to the <code class="docutils literal notranslate"><span class="pre">req
 </div>
 <div class="section" id="tools-download">
 <span id="id10"></span><h2>tools.download()<a class="headerlink" href="#tools-download" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">retry_wait</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
-             <span class="n">auth</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">retry_wait</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+             <span class="n">auth</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Retrieves a file from a given URL into a file with a given filename. It uses certificates from a list of known verifiers for https
@@ -626,7 +646,7 @@ downloads, but this can be optionally disabled.</p>
 <span class="n">tools</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s2">&quot;http://someurl/somefile.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;myfilename.zip&quot;</span><span class="p">)</span>
 
 <span class="c1"># to disable verification:</span>
-<span class="n">tools</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s2">&quot;http://someurl/somefile.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;myfilename.zip&quot;</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">tools</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s2">&quot;http://someurl/somefile.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;myfilename.zip&quot;</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># to retry the download 2 times waiting 5 seconds between them</span>
 <span class="n">tools</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s2">&quot;http://someurl/somefile.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;myfilename.zip&quot;</span><span class="p">,</span> <span class="n">retry</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">retry_wait</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
@@ -683,7 +703,7 @@ will raise an exception.</li>
 </div>
 <div class="section" id="tools-replace-in-file">
 <span id="id12"></span><h2>tools.replace_in_file()<a class="headerlink" href="#tools-replace-in-file" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">replace_in_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">search</span><span class="p">,</span> <span class="n">replace</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">replace_in_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">search</span><span class="p">,</span> <span class="n">replace</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This function is useful for a simple “patch” or modification of source files. A typical use would be to augment some library existing
@@ -713,7 +733,7 @@ actually replaced.</li>
 </div>
 <div class="section" id="tools-replace-path-in-file">
 <span id="id13"></span><h2>tools.replace_path_in_file()<a class="headerlink" href="#tools-replace-path-in-file" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">replace_path_in_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">search</span><span class="p">,</span> <span class="n">replace</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">windows_paths</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">replace_path_in_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">search</span><span class="p">,</span> <span class="n">replace</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">windows_paths</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Replace a path in a file with another string. In Windows, it will match the path even if the casing and the path separator doesn’t match.</p>
@@ -788,7 +808,7 @@ The previous is equivalent to:</p>
 </div>
 <div class="section" id="tools-patch">
 <span id="id16"></span><h2>tools.patch()<a class="headerlink" href="#tools-patch" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">patch</span><span class="p">(</span><span class="n">base_path</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">patch_file</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">patch_string</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">strip</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">patch</span><span class="p">(</span><span class="n">base_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">patch_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">patch_string</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">strip</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">output</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Applies a patch from a file or from a string into the given path. The patch should be in diff (unified diff) format. To be used mainly in
@@ -838,7 +858,7 @@ the <code class="docutils literal notranslate"><span class="pre">source()</span>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">conans</span> <span class="kn">import</span> <span class="n">tools</span>
 
 <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">with</span> <span class="n">tools</span><span class="o">.</span><span class="n">environment_append</span><span class="p">({</span><span class="s2">&quot;MY_VAR&quot;</span><span class="p">:</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="s2">&quot;CXX&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/cxx&quot;</span><span class="p">,</span> <span class="s2">&quot;CPPFLAGS&quot;</span><span class="p">:</span> <span class="bp">None</span><span class="p">}):</span>
+    <span class="k">with</span> <span class="n">tools</span><span class="o">.</span><span class="n">environment_append</span><span class="p">({</span><span class="s2">&quot;MY_VAR&quot;</span><span class="p">:</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="s2">&quot;CXX&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/cxx&quot;</span><span class="p">,</span> <span class="s2">&quot;CPPFLAGS&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}):</span>
         <span class="n">do_something</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -963,7 +983,7 @@ downloads and unzip progress.</p>
 </div>
 <div class="section" id="tools-cross-building">
 <span id="cross-building-reference"></span><h2>tools.cross_building()<a class="headerlink" href="#tools-cross-building" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cross_building</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">self_os</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">self_arch</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cross_building</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="n">self_os</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">self_arch</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Reading the settings and the current host machine it returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if we are cross building a Conan package:</p>
@@ -985,7 +1005,7 @@ downloads and unzip progress.</p>
 </div>
 <div class="section" id="tools-get-gnu-triplet">
 <span id="id22"></span><h2>tools.get_gnu_triplet()<a class="headerlink" href="#tools-get-gnu-triplet" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_gnu_triplet</span><span class="p">(</span><span class="n">os_</span><span class="p">,</span> <span class="n">arch</span><span class="p">,</span> <span class="n">compiler</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_gnu_triplet</span><span class="p">(</span><span class="n">os_</span><span class="p">,</span> <span class="n">arch</span><span class="p">,</span> <span class="n">compiler</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Returns string with GNU like <code class="docutils literal notranslate"><span class="pre">&lt;machine&gt;-&lt;vendor&gt;-&lt;op_system&gt;</span></code> triplet.</p>
@@ -1001,7 +1021,7 @@ downloads and unzip progress.</p>
 </div>
 <div class="section" id="tools-run-in-windows-bash">
 <span id="id23"></span><h2>tools.run_in_windows_bash()<a class="headerlink" href="#tools-run-in-windows-bash" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_in_windows_bash</span><span class="p">(</span><span class="n">conanfile</span><span class="p">,</span> <span class="n">bashcmd</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">subsystem</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">msys_mingw</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">with_login</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">run_in_windows_bash</span><span class="p">(</span><span class="n">conanfile</span><span class="p">,</span> <span class="n">bashcmd</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subsystem</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">msys_mingw</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">env</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">with_login</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Runs a UNIX command inside a bash shell. It requires to have “bash” in the path.
@@ -1056,7 +1076,7 @@ and will remove from the <code class="docutils literal notranslate"><span class=
 </div>
 <div class="section" id="tools-unix-path">
 <span id="id26"></span><h2>tools.unix_path()<a class="headerlink" href="#tools-unix-path" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">unix_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">path_flavor</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">unix_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">path_flavor</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Used to translate Windows paths to MSYS/CYGWIN Unix paths like <code class="docutils literal notranslate"><span class="pre">c/users/path/to/file</span></code>.</p>
@@ -1131,7 +1151,7 @@ and will remove from the <code class="docutils literal notranslate"><span class=
 </div>
 <div class="section" id="tools-save">
 <span id="id30"></span><h2>tools.save()<a class="headerlink" href="#tools-save" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Utility function to save files in one line. It will manage the open and close of the file and creating directories if necessary.</p>
@@ -1152,7 +1172,7 @@ and will remove from the <code class="docutils literal notranslate"><span class=
 </div>
 <div class="section" id="tools-load">
 <span id="id31"></span><h2>tools.load()<a class="headerlink" href="#tools-load" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">binary</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Utility function to load files in one line. It will manage the open and close of the file, and load binary encodings. Returns the content of
@@ -1261,7 +1281,7 @@ directory already exists and <code class="docutils literal notranslate"><span cl
 </div>
 <div class="section" id="tools-touch">
 <h2>tools.touch()<a class="headerlink" href="#tools-touch" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">touch</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">touch</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Updates the timestamp (last access and last modification times) of a file. This is similar to Unix’ <code class="docutils literal notranslate"><span class="pre">touch</span></code> command except that this one
@@ -1305,15 +1325,15 @@ fails if the file does not exist.</p>
 </div>
 <div class="section" id="tools-vswhere">
 <span id="id36"></span><h2>tools.vswhere()<a class="headerlink" href="#tools-vswhere" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vswhere</span><span class="p">(</span><span class="n">all_</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">prerelease</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">products</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">requires</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">latest</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">legacy</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">property_</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">nologo</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vswhere</span><span class="p">(</span><span class="n">all_</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">prerelease</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">products</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">requires</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">latest</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legacy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">property_</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">nologo</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Wrapper of <code class="docutils literal notranslate"><span class="pre">vswhere</span></code> tool to look for details of Visual Studio installations. Its output is always a list with a dictionary for each
 installation found.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">conans</span> <span class="kn">import</span> <span class="n">tools</span>
 
-<span class="n">vs_legacy_installations</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">vswhere</span><span class="p">(</span><span class="n">legacy</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">vs_legacy_installations</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">vswhere</span><span class="p">(</span><span class="n">legacy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="docutils">
@@ -1357,7 +1377,7 @@ object and property names. Example: <code class="docutils literal notranslate"><
 </div>
 <div class="section" id="tools-vs-installation-path">
 <h2>tools.vs_installation_path()<a class="headerlink" href="#tools-vs-installation-path" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vs_installation_path</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">preference</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vs_installation_path</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="n">preference</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Returns the Visual Studio installation path for the given version. It uses <a class="reference internal" href="#tools-vswhere"><span class="std std-ref">tools.vswhere()</span></a> and <a class="reference internal" href="#tools-vs-comntools"><span class="std std-ref">tools.vs_comntools()</span></a>. It will also
@@ -1407,7 +1427,7 @@ path only for that Visual type and version, otherwise <code class="docutils lite
 </div>
 <div class="section" id="tools-collect-libs">
 <span id="id39"></span><h2>tools.collect_libs()<a class="headerlink" href="#tools-collect-libs" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">collect_libs</span><span class="p">(</span><span class="n">conanfile</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">collect_libs</span><span class="p">(</span><span class="n">conanfile</span><span class="p">,</span> <span class="n">folder</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Returns a list of library names from the libraries (files with extensions <em>.so</em>, <em>.lib</em>, <em>.a</em> and <em>.dylib</em>) located inside the
@@ -1438,7 +1458,7 @@ inter-dependent, then <code class="docutils literal notranslate"><span class="pr
 </div>
 <div class="section" id="tools-pkgconfig">
 <span id="id40"></span><h2>tools.PkgConfig()<a class="headerlink" href="#tools-pkgconfig" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">PkgConfig</span><span class="p">(</span><span class="n">library</span><span class="p">,</span> <span class="n">pkg_config_executable</span><span class="o">=</span><span class="s2">&quot;pkg-config&quot;</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">msvc_syntax</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">print_errors</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">PkgConfig</span><span class="p">(</span><span class="n">library</span><span class="p">,</span> <span class="n">pkg_config_executable</span><span class="o">=</span><span class="s2">&quot;pkg-config&quot;</span><span class="p">,</span> <span class="n">static</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">msvc_syntax</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">print_errors</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Wrapper of the <code class="docutils literal notranslate"><span class="pre">pkg-config</span></code> tool.</p>
@@ -1446,9 +1466,9 @@ inter-dependent, then <code class="docutils literal notranslate"><span class="pr
 
 <span class="k">with</span> <span class="n">environment_append</span><span class="p">({</span><span class="s1">&#39;PKG_CONFIG_PATH&#39;</span><span class="p">:</span> <span class="n">tmp_dir</span><span class="p">}):</span>
     <span class="n">pkg_config</span> <span class="o">=</span> <span class="n">PkgConfig</span><span class="p">(</span><span class="s2">&quot;libastral&quot;</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">pkg_config</span><span class="o">.</span><span class="n">cflags</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">pkg_config</span><span class="o">.</span><span class="n">cflags_only_I</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="n">pkg_config</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">pkg_config</span><span class="o">.</span><span class="n">cflags</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">pkg_config</span><span class="o">.</span><span class="n">cflags_only_I</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">pkg_config</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="docutils">
@@ -1520,8 +1540,8 @@ command line).</li>
 <p class="first admonition-title">Warning</p>
 <p class="last">This is an <strong>experimental</strong> feature subject to breaking changes in future releases.</p>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Git</span><span class="p">(</span><span class="n">folder</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">verify_ssl</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-          <span class="n">force_english</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">runner</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Git</span><span class="p">(</span><span class="n">folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verify_ssl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+          <span class="n">force_english</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">runner</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 </pre></div>
 </div>
 <p>Wrapper of the <code class="docutils literal notranslate"><span class="pre">git</span></code> tool.</p>
@@ -1567,8 +1587,8 @@ will be used.</li>
 <p class="first admonition-title">Warning</p>
 <p class="last">This is an <strong>experimental</strong> feature subject to breaking changes in future releases.</p>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SVN</span><span class="p">(</span><span class="n">folder</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">verify_ssl</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-          <span class="n">force_english</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">runner</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SVN</span><span class="p">(</span><span class="n">folder</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verify_ssl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+          <span class="n">force_english</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">runner</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 </pre></div>
 </div>
 <p>Wrapper of the <code class="docutils literal notranslate"><span class="pre">svn</span></code> tool.</p>
@@ -1693,7 +1713,7 @@ depend on the root of the working copy that has been checked out.</p>
 <span id="id49"></span><h2>tools.XCRun()<a class="headerlink" href="#tools-xcrun" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">XCRun</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">,</span> <span class="n">sdk</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">,</span> <span class="n">sdk</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 </pre></div>
 </div>
 <p>XCRun wrapper used to get information for building.</p>
@@ -1764,7 +1784,7 @@ if <code class="docutils literal notranslate"><span class="pre">file.txt</span><
   <div role="contentinfo">
     <p>
         &copy; Copyright 2016-2019, JFrog.
-
+      <span><a href="#" class="ot-sdk-show-settings">Cookies Settings</a></span>
     </p>
   </div>
   Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
@@ -1789,43 +1809,7 @@ if <code class="docutils literal notranslate"><span class="pre">file.txt</span><
         <dt>Versions</dt>
         
           
-            <dd><a href="/en/latest/index.html">1.14</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.13/index.html">1.13</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.12/index.html">1.12</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.11/index.html">1.11</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.10/index.html">1.10</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.9/index.html">1.9</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.8/index.html">1.8</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.7/index.html">1.7</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.6/index.html">1.6</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.5/index.html">1.5</a></dd>
+            <dd><a href="/en/1.3/index.html">1.3</a></dd>
           
         
           
@@ -1833,7 +1817,123 @@ if <code class="docutils literal notranslate"><span class="pre">file.txt</span><
           
         
           
-            <dd><a href="/en/1.3/index.html">1.3</a></dd>
+            <dd><a href="/en/1.5/index.html">1.5</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.6/index.html">1.6</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.7/index.html">1.7</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.8/index.html">1.8</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.9/index.html">1.9</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.10/index.html">1.10</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.11/index.html">1.11</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.12/index.html">1.12</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.13/index.html">1.13</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.14/index.html">1.14</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.15/index.html">1.15</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.16/index.html">1.16</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.17/index.html">1.17</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.18/index.html">1.18</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.19/index.html">1.19</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.20/index.html">1.20</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.21/index.html">1.21</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.22/index.html">1.22</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.23/index.html">1.23</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.24/index.html">1.24</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.25/index.html">1.25</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.26/index.html">1.26</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.27/index.html">1.27</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.28/index.html">1.28</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.29/index.html">1.29</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.30/index.html">1.30</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.31/index.html">1.31</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.32/index.html">1.32</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.33/index.html">1.33</a></dd>
+          
+        
+          
+            <dd><a href="/en/latest/index.html">latest</a></dd>
           
         
       </dl>
@@ -1869,6 +1969,14 @@ if <code class="docutils literal notranslate"><span class="pre">file.txt</span><
     <script type="text/javascript" src="../_static/js/theme.js"></script>
   
 
+  <!-- <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+  <script src="../_static/js/modernizr.min.js"></script>
+  <script src="../_static/js/search.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+-->
   
   
   <script type="text/javascript">
@@ -1878,7 +1986,12 @@ if <code class="docutils literal notranslate"><span class="pre">file.txt</span><
   </script>
   
 
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-53TFLK7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+  <script>
+    // initSearch("1.13");
+  </script>
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WK44ZFM" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
  

@@ -10,7 +10,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Environment variables &mdash; conan 1.14.1 documentation</title>
+  <title>Environment variables &mdash; conan 1.14.5 documentation</title>
   
 
   
@@ -39,10 +39,13 @@
   
 
   
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../_static/css/search.css" type="text/css" />
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="conan 1.14.1 documentation" href="../index.html"/>
+    <link rel="top" title="conan 1.14.5 documentation" href="../index.html"/>
         <link rel="up" title="Reference" href="../reference.html"/>
         <link rel="next" title="Hooks [EXPERIMENTAL]" href="hooks.html"/>
         <link rel="prev" title="Editable layout files" href="config_files/editable_layout.html"/>
@@ -62,7 +65,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
   
-  <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -133,6 +135,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li class="toctree-l3"><a class="reference internal" href="#conan-bash-path">CONAN_BASH_PATH</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#conan-cache-no-locks">CONAN_CACHE_NO_LOCKS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#conan-cmake-generator">CONAN_CMAKE_GENERATOR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#conan-cmake-generator-platform">CONAN_CMAKE_GENERATOR_PLATFORM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#conan-color-dark">CONAN_COLOR_DARK</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#conan-color-display">CONAN_COLOR_DISPLAY</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#conan-compression-level">CONAN_COMPRESSION_LEVEL</a></li>
@@ -199,6 +202,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
       
+      <script>
+        var reldir = "../index.html".replace("index.html","").replace("#", "");
+      </script>
       <div class="wy-nav-content">
         <div class="rst-content">
           
@@ -217,7 +223,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<div role="navigation" aria-label="breadcrumbs navigation">
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation" id="breadcrumbs">
 
   <ul class="wy-breadcrumbs">
     
@@ -241,8 +254,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </ul>
 
   
-  <hr/>
 </div>
+          <!--<select id="search" name="state" multiple="true" onchange="window.location = reldir + this.value;" style="width:90%"></select>
+          <hr/>-->
+          <!--<div class="admonition important"> Join the <a href=https://blog.conan.io/2020/07/28/Launching-Conan-2.0-Tribe.html>Conan 2.0 Tribe</a> and contribute to define the next Conan 2.0 major version</div>-->
+          <div class="admonition important">
+            <p class="admonition-title">Announcement</p>
+            <p>Check out the new free <a
+            href=https://blog.conan.io/2020/09/24/New-conan-training-series.html>Conan
+            training courses on JFrog Academy</a>!
+          </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
@@ -291,6 +312,9 @@ the <a class="reference internal" href="build_helpers/cmake.html#cmake-reference
 <tr class="row-odd"><td>CONAN_CMAKE_FIND_ROOT_PATH_MODE_INCLUDE</td>
 <td>CMAKE_FIND_ROOT_PATH_MODE_INCLUDE</td>
 </tr>
+<tr class="row-even"><td>CONAN_CMAKE_GENERATOR_PLATFORM</td>
+<td>CMAKE_GENERATOR_PLATFORM</td>
+</tr>
 </tbody>
 </table>
 <div class="admonition seealso">
@@ -322,6 +346,41 @@ build system, as Ninja, should lead to the same binary if using appropriately th
 underlying compiler settings. So it doesn’t make sense to provide a setting or option for this.</p>
 <p>So it can be set with the environment variable <code class="docutils literal notranslate"><span class="pre">CONAN_CMAKE_GENERATOR</span></code>. Just set its value
 to your desired CMake generator (as <code class="docutils literal notranslate"><span class="pre">Ninja</span></code>).</p>
+</div>
+<div class="section" id="conan-cmake-generator-platform">
+<h2>CONAN_CMAKE_GENERATOR_PLATFORM<a class="headerlink" href="#conan-cmake-generator-platform" title="Permalink to this headline">¶</a></h2>
+<p>Defines generator platform to be used by particular CMake generator (see <cite>CMAKE_GENERATOR_PLATFORM documentation &lt;https://cmake.org/cmake/help/latest/variable/CMAKE_GENERATOR_PLATFORM.html&gt;</cite>).
+Resulting value is passed to the <code class="docutils literal notranslate"><span class="pre">cmake</span></code> command line (<code class="docutils literal notranslate"><span class="pre">-A</span></code> argument) by the Conan <code class="docutils literal notranslate"><span class="pre">CMake</span></code> helper class during the configuration step.
+Passing <code class="docutils literal notranslate"><span class="pre">None</span></code> causes auto-detection, which currently only happens for the <code class="docutils literal notranslate"><span class="pre">Visual</span> <span class="pre">Studio</span> <span class="pre">16</span> <span class="pre">2019</span></code> generator. The detection is according to the following table:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="46%" />
+<col width="54%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">settings.arch</th>
+<th class="head">generator platform</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>x86</td>
+<td>Win32</td>
+</tr>
+<tr class="row-odd"><td>x86_64</td>
+<td>x64</td>
+</tr>
+<tr class="row-even"><td>armv7</td>
+<td>ARM</td>
+</tr>
+<tr class="row-odd"><td>armv8</td>
+<td>ARM64</td>
+</tr>
+<tr class="row-even"><td>other</td>
+<td>(none)</td>
+</tr>
+</tbody>
+</table>
+<p>For any other generators besides the <code class="docutils literal notranslate"><span class="pre">Visual</span> <span class="pre">Studio</span> <span class="pre">16</span> <span class="pre">2019</span></code> generator, detection results in no generator platform applied (and no <code class="docutils literal notranslate"><span class="pre">-A</span></code> argument passed to the CMake command line).</p>
 </div>
 <div class="section" id="conan-color-dark">
 <h2>CONAN_COLOR_DARK<a class="headerlink" href="#conan-color-dark" title="Permalink to this headline">¶</a></h2>
@@ -400,7 +459,7 @@ to the <code class="docutils literal notranslate"><span class="pre">build</span>
 executions.</p>
 <p>The file can be included in the Conan package (for debugging purposes) using the <code class="docutils literal notranslate"><span class="pre">package</span></code> method.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">package</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;conan_run.log&quot;</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">keep_path</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;conan_run.log&quot;</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">keep_path</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -537,7 +596,7 @@ host machine building the package.</p>
 <p>It can be defined in your profile files at <code class="docutils literal notranslate"><span class="pre">~/.conan/profiles</span></code></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
 <span class="p">[</span><span class="n">env</span><span class="p">]</span>
-<span class="n">CONAN_RUN_TESTS</span><span class="o">=</span><span class="bp">False</span>
+<span class="n">CONAN_RUN_TESTS</span><span class="o">=</span><span class="kc">False</span>
 </pre></div>
 </div>
 <p>or declared in command line when invoking <strong class="command">conan install</strong> to reduce the variable scope for conan execution</p>
@@ -557,7 +616,7 @@ with <a class="reference internal" href="../howtos/header_only.html#header-only-
         <span class="n">cmake</span> <span class="o">=</span> <span class="n">CMake</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">cmake</span><span class="o">.</span><span class="n">configure</span><span class="p">()</span>
         <span class="n">cmake</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">tools</span><span class="o">.</span><span class="n">get_env</span><span class="p">(</span><span class="s2">&quot;CONAN_RUN_TESTS&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">tools</span><span class="o">.</span><span class="n">get_env</span><span class="p">(</span><span class="s2">&quot;CONAN_RUN_TESTS&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
             <span class="n">cmake</span><span class="o">.</span><span class="n">test</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -711,7 +770,7 @@ under the section <code class="docutils literal notranslate"><span class="pre">[
   <div role="contentinfo">
     <p>
         &copy; Copyright 2016-2019, JFrog.
-
+      <span><a href="#" class="ot-sdk-show-settings">Cookies Settings</a></span>
     </p>
   </div>
   Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
@@ -736,43 +795,7 @@ under the section <code class="docutils literal notranslate"><span class="pre">[
         <dt>Versions</dt>
         
           
-            <dd><a href="/en/latest/index.html">1.14</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.13/index.html">1.13</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.12/index.html">1.12</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.11/index.html">1.11</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.10/index.html">1.10</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.9/index.html">1.9</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.8/index.html">1.8</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.7/index.html">1.7</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.6/index.html">1.6</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.5/index.html">1.5</a></dd>
+            <dd><a href="/en/1.3/index.html">1.3</a></dd>
           
         
           
@@ -780,14 +803,130 @@ under the section <code class="docutils literal notranslate"><span class="pre">[
           
         
           
-            <dd><a href="/en/1.3/index.html">1.3</a></dd>
+            <dd><a href="/en/1.5/index.html">1.5</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.6/index.html">1.6</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.7/index.html">1.7</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.8/index.html">1.8</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.9/index.html">1.9</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.10/index.html">1.10</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.11/index.html">1.11</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.12/index.html">1.12</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.13/index.html">1.13</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.14/index.html">1.14</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.15/index.html">1.15</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.16/index.html">1.16</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.17/index.html">1.17</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.18/index.html">1.18</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.19/index.html">1.19</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.20/index.html">1.20</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.21/index.html">1.21</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.22/index.html">1.22</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.23/index.html">1.23</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.24/index.html">1.24</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.25/index.html">1.25</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.26/index.html">1.26</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.27/index.html">1.27</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.28/index.html">1.28</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.29/index.html">1.29</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.30/index.html">1.30</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.31/index.html">1.31</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.32/index.html">1.32</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.33/index.html">1.33</a></dd>
+          
+        
+          
+            <dd><a href="/en/latest/index.html">latest</a></dd>
           
         
       </dl>
       <dl>
         <dt>Downloads</dt>
         
-          <dd><a href="/en/latest/conan.pdf">PDF</a></dd>
+          <dd><a href="/en/1.14/conan.pdf">PDF</a></dd>
         
       </dl>
     </div>
@@ -798,7 +937,7 @@ under the section <code class="docutils literal notranslate"><span class="pre">[
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.14.1',
+            VERSION:'1.14.5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -816,6 +955,14 @@ under the section <code class="docutils literal notranslate"><span class="pre">[
     <script type="text/javascript" src="../_static/js/theme.js"></script>
   
 
+  <!-- <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+  <script src="../_static/js/modernizr.min.js"></script>
+  <script src="../_static/js/search.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+-->
   
   
   <script type="text/javascript">
@@ -824,6 +971,11 @@ under the section <code class="docutils literal notranslate"><span class="pre">[
       });
   </script>
   
+
+
+  <script>
+    // initSearch("1.14");
+  </script>
 
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WK44ZFM" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 

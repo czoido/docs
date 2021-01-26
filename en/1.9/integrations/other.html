@@ -37,6 +37,9 @@
   
 
   
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../_static/css/search.css" type="text/css" />
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
@@ -50,18 +53,18 @@
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-53TFLK7');</script>
+})(window,document,'script','dataLayer','GTM-WK44ZFM');</script>
 <!-- End Google Tag Manager -->
  
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-68594724-3"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=GTM-WK44ZFM"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-68594724-3');
+  gtag('config', 'GTM-WK44ZFM');
 </script>
 
 
@@ -69,7 +72,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
   
-  <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -190,6 +192,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
       
+      <script>
+        var reldir = "../index.html".replace("index.html","").replace("#", "");
+      </script>
       <div class="wy-nav-content">
         <div class="rst-content">
           
@@ -208,7 +213,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<div role="navigation" aria-label="breadcrumbs navigation">
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation" id="breadcrumbs">
 
   <ul class="wy-breadcrumbs">
     
@@ -232,8 +244,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </ul>
 
   
-  <hr/>
 </div>
+          <!--<select id="search" name="state" multiple="true" onchange="window.location = reldir + this.value;" style="width:90%"></select>
+          <hr/>-->
+          <!--<div class="admonition important"> Join the <a href=https://blog.conan.io/2020/07/28/Launching-Conan-2.0-Tribe.html>Conan 2.0 Tribe</a> and contribute to define the next Conan 2.0 major version</div>-->
+          <div class="admonition important">
+            <p class="admonition-title">Announcement</p>
+            <p>Check out the new free <a
+            href=https://blog.conan.io/2020/09/24/New-conan-training-series.html>Conan
+            training courses on JFrog Academy</a>!
+          </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
@@ -371,7 +391,7 @@ and much more reusable to create a generator to simplify the task for your build
    <span class="n">requires</span> <span class="o">=</span> <span class="s2">&quot;Poco/1.9.0@pocoproject/stable&quot;</span>
    <span class="c1">########### IT&#39;S IMPORTANT TO DECLARE THE TXT GENERATOR TO DEAL WITH A GENERIC BUILD SYSTEM</span>
    <span class="n">generators</span> <span class="o">=</span> <span class="s2">&quot;txt&quot;</span>
-   <span class="n">default_options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Poco:shared&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s2">&quot;OpenSSL:shared&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">}</span>
+   <span class="n">default_options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Poco:shared&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;OpenSSL:shared&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
 
    <span class="k">def</span> <span class="nf">imports</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="s2">&quot;*.dll&quot;</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="s2">&quot;bin&quot;</span><span class="p">,</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;bin&quot;</span><span class="p">)</span> <span class="c1"># From bin to bin</span>
@@ -380,50 +400,50 @@ and much more reusable to create a generator to simplify the task for your build
    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
       <span class="c1">############ Without any helper ###########</span>
       <span class="c1"># Settings</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">os</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">arch</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">compiler</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">os</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">arch</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">compiler</span><span class="p">)</span>
 
       <span class="c1"># Options</span>
       <span class="c1">#print(self.options.my_option)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shared</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shared</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shared</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">shared</span><span class="p">)</span>
 
       <span class="c1"># Paths and libraries, all</span>
-      <span class="k">print</span><span class="p">(</span><span class="s2">&quot;-------- ALL --------------&quot;</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">include_paths</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">lib_paths</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">bin_paths</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">libs</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">defines</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">cflags</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">cppflags</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">sharedlinkflags</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">exelinkflags</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-------- ALL --------------&quot;</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">include_paths</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">lib_paths</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">bin_paths</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">libs</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">defines</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">cflags</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">cppflags</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">sharedlinkflags</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="o">.</span><span class="n">exelinkflags</span><span class="p">)</span>
 
       <span class="c1"># Just from OpenSSL</span>
-      <span class="k">print</span><span class="p">(</span><span class="s2">&quot;--------- FROM OPENSSL -------------&quot;</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">include_paths</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lib_paths</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">bin_paths</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">libs</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">defines</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cflags</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cppflags</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sharedlinkflags</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">exelinkflags</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--------- FROM OPENSSL -------------&quot;</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">include_paths</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lib_paths</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">bin_paths</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">libs</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">defines</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cflags</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cppflags</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sharedlinkflags</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;OpenSSL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">exelinkflags</span><span class="p">)</span>
 
       <span class="c1"># Just from POCO</span>
-      <span class="k">print</span><span class="p">(</span><span class="s2">&quot;--------- FROM POCO -------------&quot;</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">include_paths</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lib_paths</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">bin_paths</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">libs</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">defines</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cflags</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cppflags</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sharedlinkflags</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">exelinkflags</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--------- FROM POCO -------------&quot;</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">include_paths</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">lib_paths</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">bin_paths</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">libs</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">defines</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cflags</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cppflags</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sharedlinkflags</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_cpp_info</span><span class="p">[</span><span class="s2">&quot;Poco&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">exelinkflags</span><span class="p">)</span>
 
 
       <span class="c1"># self.run(&quot;invoke here your configure, make, or others&quot;)</span>
@@ -432,17 +452,17 @@ and much more reusable to create a generator to simplify the task for your build
 
       <span class="c1"># Environment variables (from requirements self.env_info objects)</span>
       <span class="c1"># are automatically applied in the python ``os.environ`` but can be accesible as well:</span>
-      <span class="k">print</span><span class="p">(</span><span class="s2">&quot;--------- Globally -------------&quot;</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--------- Globally -------------&quot;</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">)</span>
 
-      <span class="k">print</span><span class="p">(</span><span class="s2">&quot;--------- FROM MyLib -------------&quot;</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_env_info</span><span class="p">[</span><span class="s2">&quot;MyLib&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">some_env_var</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--------- FROM MyLib -------------&quot;</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_env_info</span><span class="p">[</span><span class="s2">&quot;MyLib&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">some_env_var</span><span class="p">)</span>
 
 
       <span class="c1"># User declared variables (from requirements self.user_info objects)</span>
       <span class="c1"># are available in the self.deps_user_info object</span>
-      <span class="k">print</span><span class="p">(</span><span class="s2">&quot;--------- FROM MyLib -------------&quot;</span><span class="p">)</span>
-      <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_user_info</span><span class="p">[</span><span class="s2">&quot;MyLib&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">some_user_var</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;--------- FROM MyLib -------------&quot;</span><span class="p">)</span>
+      <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_user_info</span><span class="p">[</span><span class="s2">&quot;MyLib&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">some_user_var</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -485,7 +505,7 @@ upgrades are much easier.</li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2016-2018, JFrog.
-
+      <span><a href="#" class="ot-sdk-show-settings">Cookies Settings</a></span>
     </p>
   </div>
   Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
@@ -510,43 +530,7 @@ upgrades are much easier.</li>
         <dt>Versions</dt>
         
           
-            <dd><a href="/en/latest/index.html">1.14</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.13/index.html">1.13</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.12/index.html">1.12</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.11/index.html">1.11</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.10/index.html">1.10</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.9/index.html">1.9</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.8/index.html">1.8</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.7/index.html">1.7</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.6/index.html">1.6</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.5/index.html">1.5</a></dd>
+            <dd><a href="/en/1.3/index.html">1.3</a></dd>
           
         
           
@@ -554,7 +538,123 @@ upgrades are much easier.</li>
           
         
           
-            <dd><a href="/en/1.3/index.html">1.3</a></dd>
+            <dd><a href="/en/1.5/index.html">1.5</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.6/index.html">1.6</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.7/index.html">1.7</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.8/index.html">1.8</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.9/index.html">1.9</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.10/index.html">1.10</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.11/index.html">1.11</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.12/index.html">1.12</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.13/index.html">1.13</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.14/index.html">1.14</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.15/index.html">1.15</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.16/index.html">1.16</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.17/index.html">1.17</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.18/index.html">1.18</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.19/index.html">1.19</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.20/index.html">1.20</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.21/index.html">1.21</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.22/index.html">1.22</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.23/index.html">1.23</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.24/index.html">1.24</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.25/index.html">1.25</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.26/index.html">1.26</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.27/index.html">1.27</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.28/index.html">1.28</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.29/index.html">1.29</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.30/index.html">1.30</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.31/index.html">1.31</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.32/index.html">1.32</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.33/index.html">1.33</a></dd>
+          
+        
+          
+            <dd><a href="/en/latest/index.html">latest</a></dd>
           
         
       </dl>
@@ -590,6 +690,14 @@ upgrades are much easier.</li>
     <script type="text/javascript" src="../_static/js/theme.js"></script>
   
 
+  <!-- <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+  <script src="../_static/js/modernizr.min.js"></script>
+  <script src="../_static/js/search.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+-->
   
   
   <script type="text/javascript">
@@ -599,7 +707,12 @@ upgrades are much easier.</li>
   </script>
   
 
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-53TFLK7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+  <script>
+    // initSearch("1.9");
+  </script>
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WK44ZFM" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
  

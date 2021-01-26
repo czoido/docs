@@ -37,6 +37,9 @@
   
 
   
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../_static/css/search.css" type="text/css" />
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
@@ -50,18 +53,18 @@
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-53TFLK7');</script>
+})(window,document,'script','dataLayer','GTM-WK44ZFM');</script>
 <!-- End Google Tag Manager -->
  
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-68594724-3"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=GTM-WK44ZFM"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'UA-68594724-3');
+  gtag('config', 'GTM-WK44ZFM');
 </script>
 
 
@@ -69,7 +72,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
   
-  <script src="../_static/js/modernizr.min.js"></script>
 
 </head>
 
@@ -184,6 +186,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
       
+      <script>
+        var reldir = "../index.html".replace("index.html","").replace("#", "");
+      </script>
       <div class="wy-nav-content">
         <div class="rst-content">
           
@@ -202,7 +207,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
-<div role="navigation" aria-label="breadcrumbs navigation">
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation" id="breadcrumbs">
 
   <ul class="wy-breadcrumbs">
     
@@ -224,8 +236,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </ul>
 
   
-  <hr/>
 </div>
+          <!--<select id="search" name="state" multiple="true" onchange="window.location = reldir + this.value;" style="width:90%"></select>
+          <hr/>-->
+          <!--<div class="admonition important"> Join the <a href=https://blog.conan.io/2020/07/28/Launching-Conan-2.0-Tribe.html>Conan 2.0 Tribe</a> and contribute to define the next Conan 2.0 major version</div>-->
+          <div class="admonition important">
+            <p class="admonition-title">Announcement</p>
+            <p>Check out the new free <a
+            href=https://blog.conan.io/2020/09/24/New-conan-training-series.html>Conan
+            training courses on JFrog Academy</a>!
+          </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
@@ -321,20 +341,20 @@ will <code class="docutils literal notranslate"><span class="pre">export</span><
     <span class="k">def</span> <span class="nf">content</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">deps</span> <span class="o">=</span> <span class="n">PremakeDeps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">deps_build_info</span><span class="p">)</span>
 
-        <span class="n">template</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;conan_includedirs{dep} = {{{deps.include_paths}}}</span><span class="se">\n</span><span class="s1">&#39;</span>
-                    <span class="s1">&#39;conan_libdirs{dep} = {{{deps.lib_paths}}}</span><span class="se">\n</span><span class="s1">&#39;</span>
-                    <span class="s1">&#39;conan_bindirs{dep} = {{{deps.bin_paths}}}</span><span class="se">\n</span><span class="s1">&#39;</span>
-                    <span class="s1">&#39;conan_libs{dep} = {{{deps.libs}}}</span><span class="se">\n</span><span class="s1">&#39;</span>
-                    <span class="s1">&#39;conan_cppdefines{dep} = {{{deps.defines}}}</span><span class="se">\n</span><span class="s1">&#39;</span>
-                    <span class="s1">&#39;conan_cppflags{dep} = {{{deps.cppflags}}}</span><span class="se">\n</span><span class="s1">&#39;</span>
-                    <span class="s1">&#39;conan_cflags{dep} = {{{deps.cflags}}}</span><span class="se">\n</span><span class="s1">&#39;</span>
-                    <span class="s1">&#39;conan_sharedlinkflags{dep} = {{{deps.sharedlinkflags}}}</span><span class="se">\n</span><span class="s1">&#39;</span>
-                    <span class="s1">&#39;conan_exelinkflags{dep} = {{{deps.exelinkflags}}}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">template</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;conan_includedirs</span><span class="si">{dep}</span><span class="s1"> = {{</span><span class="si">{deps.include_paths}</span><span class="s1">}}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="s1">&#39;conan_libdirs</span><span class="si">{dep}</span><span class="s1"> = {{</span><span class="si">{deps.lib_paths}</span><span class="s1">}}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="s1">&#39;conan_bindirs</span><span class="si">{dep}</span><span class="s1"> = {{</span><span class="si">{deps.bin_paths}</span><span class="s1">}}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="s1">&#39;conan_libs</span><span class="si">{dep}</span><span class="s1"> = {{</span><span class="si">{deps.libs}</span><span class="s1">}}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="s1">&#39;conan_cppdefines</span><span class="si">{dep}</span><span class="s1"> = {{</span><span class="si">{deps.defines}</span><span class="s1">}}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="s1">&#39;conan_cppflags</span><span class="si">{dep}</span><span class="s1"> = {{</span><span class="si">{deps.cppflags}</span><span class="s1">}}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="s1">&#39;conan_cflags</span><span class="si">{dep}</span><span class="s1"> = {{</span><span class="si">{deps.cflags}</span><span class="s1">}}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="s1">&#39;conan_sharedlinkflags</span><span class="si">{dep}</span><span class="s1"> = {{</span><span class="si">{deps.sharedlinkflags}</span><span class="s1">}}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="s1">&#39;conan_exelinkflags</span><span class="si">{dep}</span><span class="s1"> = {{</span><span class="si">{deps.exelinkflags}</span><span class="s1">}}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
         <span class="n">sections</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;#!lua&quot;</span><span class="p">]</span>
         <span class="n">all_flags</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dep</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">deps</span><span class="o">=</span><span class="n">deps</span><span class="p">)</span>
         <span class="n">sections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">all_flags</span><span class="p">)</span>
-        <span class="n">template_deps</span> <span class="o">=</span> <span class="n">template</span> <span class="o">+</span> <span class="s1">&#39;conan_rootpath{dep} = &quot;{deps.rootpath}&quot;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">template_deps</span> <span class="o">=</span> <span class="n">template</span> <span class="o">+</span> <span class="s1">&#39;conan_rootpath</span><span class="si">{dep}</span><span class="s1"> = &quot;</span><span class="si">{deps.rootpath}</span><span class="s1">&quot;</span><span class="se">\n</span><span class="s1">&#39;</span>
 
         <span class="k">for</span> <span class="n">dep_name</span><span class="p">,</span> <span class="n">dep_cpp_info</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">deps_build_info</span><span class="o">.</span><span class="n">dependencies</span><span class="p">:</span>
             <span class="n">deps</span> <span class="o">=</span> <span class="n">PremakeDeps</span><span class="p">(</span><span class="n">dep_cpp_info</span><span class="p">)</span>
@@ -427,7 +447,7 @@ Premake
 <p>Let’s install the requirements and build the project:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ conan install . -s <span class="nv">compiler</span><span class="o">=</span>gcc -s compiler.version<span class="o">=</span><span class="m">4</span>.9 -s compiler.libcxx<span class="o">=</span>libstdc++ --build
 $ premake4 gmake
-$ make <span class="o">(</span>or mingw32-make <span class="k">if</span> in windows-mingw<span class="o">)</span>
+$ make <span class="o">(</span>or mingw32-make <span class="k">if</span> <span class="k">in</span> windows-mingw<span class="o">)</span>
 $ ./MyApplication
 Hello World!
 </pre></div>
@@ -467,7 +487,7 @@ invokes premake4 in the build() method, and use <strong class="command">conan te
   <div role="contentinfo">
     <p>
         &copy; Copyright 2016-2018, JFrog.
-
+      <span><a href="#" class="ot-sdk-show-settings">Cookies Settings</a></span>
     </p>
   </div>
   Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
@@ -492,43 +512,7 @@ invokes premake4 in the build() method, and use <strong class="command">conan te
         <dt>Versions</dt>
         
           
-            <dd><a href="/en/latest/index.html">1.14</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.13/index.html">1.13</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.12/index.html">1.12</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.11/index.html">1.11</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.10/index.html">1.10</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.9/index.html">1.9</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.8/index.html">1.8</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.7/index.html">1.7</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.6/index.html">1.6</a></dd>
-          
-        
-          
-            <dd><a href="/en/1.5/index.html">1.5</a></dd>
+            <dd><a href="/en/1.3/index.html">1.3</a></dd>
           
         
           
@@ -536,7 +520,123 @@ invokes premake4 in the build() method, and use <strong class="command">conan te
           
         
           
-            <dd><a href="/en/1.3/index.html">1.3</a></dd>
+            <dd><a href="/en/1.5/index.html">1.5</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.6/index.html">1.6</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.7/index.html">1.7</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.8/index.html">1.8</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.9/index.html">1.9</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.10/index.html">1.10</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.11/index.html">1.11</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.12/index.html">1.12</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.13/index.html">1.13</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.14/index.html">1.14</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.15/index.html">1.15</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.16/index.html">1.16</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.17/index.html">1.17</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.18/index.html">1.18</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.19/index.html">1.19</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.20/index.html">1.20</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.21/index.html">1.21</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.22/index.html">1.22</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.23/index.html">1.23</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.24/index.html">1.24</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.25/index.html">1.25</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.26/index.html">1.26</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.27/index.html">1.27</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.28/index.html">1.28</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.29/index.html">1.29</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.30/index.html">1.30</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.31/index.html">1.31</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.32/index.html">1.32</a></dd>
+          
+        
+          
+            <dd><a href="/en/1.33/index.html">1.33</a></dd>
+          
+        
+          
+            <dd><a href="/en/latest/index.html">latest</a></dd>
           
         
       </dl>
@@ -572,6 +672,14 @@ invokes premake4 in the build() method, and use <strong class="command">conan te
     <script type="text/javascript" src="../_static/js/theme.js"></script>
   
 
+  <!-- <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+  <script src="../_static/js/modernizr.min.js"></script>
+  <script src="../_static/js/search.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+-->
   
   
   <script type="text/javascript">
@@ -581,7 +689,12 @@ invokes premake4 in the build() method, and use <strong class="command">conan te
   </script>
   
 
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-53TFLK7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+  <script>
+    // initSearch("1.6");
+  </script>
+
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WK44ZFM" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
  
