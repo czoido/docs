@@ -113,7 +113,7 @@ node('Linux') {
             else if (env.BRANCH_NAME=="${currentReleaseBranch}") {
                 def release_head = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                 sh "git fetch origin latest:latest && git checkout latest"
-                sh "git config --global user.email \"you@example.com\" && git config --global user.name \"Your Name\" && git merge origin/${currentReleaseBranch}"
+                sh "set +e && git config --global user.email \"you@example.com\" && git config --global user.name \"Your Name\" && git merge origin/${currentReleaseBranch} && set -e"
                 def latest_head = sh(script: 'git rev-parse HEAD', returnStdout: true).trim()
                 sh "git diff --name-only ${latest_head}..${release_head}"
                 def diff_branches = sh(script: "git diff --name-only ${latest_head}..${release_head} | wc -l", returnStdout: true).trim() as int
