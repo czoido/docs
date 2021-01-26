@@ -146,7 +146,7 @@ node('Linux') {
 
     stage('Archive generated folder') {
         archiveArtifacts artifacts: 'gh-pages/**/*.*'
-        echo "Inspect generated webpage at ${BUILD_URL}artifact/gh-pages/index.html"
+        echo "Inspect generated webpage at ${BUILD_URL}artifact/gh-pages/en/latest/index.html"
     }
     
     // dir('gh-pages') {
