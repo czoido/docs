@@ -130,12 +130,12 @@ node('Linux') {
 
     if (triggerPublish && publishBranches) {
         echo "---- Will publish at least ${publishBranches}"
-        // build(job: 'Conan-Docs-Publish', propagate: true, wait: true, parameters: [
-        //     [$class: 'StringParameterValue', name: 'latest', value: currentReleaseBranch],
-        //     [$class: 'StringParameterValue', name: 'branches_to_publish', value: publishBranches],
-        //     [$class: 'StringParameterValue', name: 'prefix', value: 'https://czoido.github.io/docs/'],
-        //     [$class: 'BooleanParameterValue', name: 'publish', value: true]
-        // ])
+        build(job: 'Conan-Docs-Publish', propagate: true, wait: true, parameters: [
+            [$class: 'StringParameterValue', name: 'branches_to_publish', value: publishBranches],
+            [$class: 'StringParameterValue', name: 'current_release_branch', value: currentReleaseBranch],
+            [$class: 'StringParameterValue', name: 'prefix', value: 'https://czoido.github.io/docs/'],
+            [$class: 'BooleanParameterValue', name: 'publish', value: true]
+        ])
     }
     else {
         echo "---- Publish job will not be triggered"
