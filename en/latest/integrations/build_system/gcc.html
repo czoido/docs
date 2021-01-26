@@ -205,6 +205,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 
+
+
+
+
+
+
+
 <div role="navigation" aria-label="breadcrumbs navigation" id="breadcrumbs">
 
   <ul class="wy-breadcrumbs">
@@ -247,7 +254,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <div class="section" id="compilers-on-command-line">
 <span id="gcc-integration"></span><h1>Compilers on command line<a class="headerlink" href="#compilers-on-command-line" title="Permalink to this headline">¶</a></h1>
 <p>The <strong>compiler_args</strong> generator creates a file named <code class="docutils literal notranslate"><span class="pre">conanbuildinfo.args</span></code> containing command
-line arguments to invoke <code class="docutils literal notranslate"><span class="pre">gcc</span></code>, <code class="docutils literal notranslate"><span class="pre">clang</span></code> or <code class="docutils literal notranslate"><span class="pre">cl</span></code> (Visual Studio) compiler.</p>
+line arguments to invoke <code class="docutils literal notranslate"><span class="pre">gcc</span></code>, <code class="docutils literal notranslate"><span class="pre">clang</span></code> or <code class="docutils literal notranslate"><span class="pre">cl</span></code> (Visual Studio) compiler. Fix one thing.</p>
 <p>Now we are going to compile the <a class="reference internal" href="../../getting_started.html#getting-started"><span class="std std-ref">getting started</span></a> example using <strong>compiler_args</strong> instead of the <strong>cmake</strong> generator.</p>
 <p>Open <code class="docutils literal notranslate"><span class="pre">conanfile.txt</span></code> and change (or add) <strong>compiler_args</strong> generator:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>[requires]
@@ -339,7 +346,7 @@ $ g++ ../timer.cpp @conanbuildinfo.args -std<span class="o">=</span>c++14 -o bin
   <div role="contentinfo">
     <p>
         &copy; Copyright 2016-2020, JFrog.
-      Last updated on Jan 22, 2021.
+      Last updated on Jan 26, 2021.
       <span><a href="#" class="ot-sdk-show-settings">Cookies Settings</a></span>
     </p>
   </div> 
@@ -485,6 +492,10 @@ $ g++ ../timer.cpp @conanbuildinfo.args -std<span class="o">=</span>c++14 -o bin
         
           
             <dd><a href="/en/1.33/index.html">1.33</a></dd>
+          
+        
+          
+            <dd><a href="/en/latest/index.html">latest</a></dd>
           
         
       </dl>
