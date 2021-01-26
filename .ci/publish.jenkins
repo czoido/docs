@@ -4,6 +4,9 @@ node('Linux') {
 
     String prefix = params.prefix ?: "${BUILD_URL}artifact/gh-pages/"
     def branches
+    Map<String, String> versionsToBuild = [:]
+    Map<String, String> versionsAll = [:]
+
     stage('Check params') {
         assert params.branches_to_publish, 'Provide branches to publish separated with semicolons'
         assert params.current_release_branch, 'Provide branch for docs of current Conan version'
@@ -27,7 +30,7 @@ node('Linux') {
     def image = null
     stage('Build docker image') {
         // Build the docker image using the same commit as the current 'publish.jenkins' file
-        sh "git clone --branch latest --depth 2 https://github.com/czoido/docs.git tmp"
+        sh "git clone --branch latest --depth 2 https://github.com/${params.docs_repo}.git tmp"
         dir('tmp') {
             if ("latest" in branches) {
                 if (!build_all_branches) {
@@ -59,8 +62,6 @@ node('Linux') {
         def latestVersion = params.current_release_branch.split("/")[1]
         def minMinor = minVersionToPublish.split("\\.")[1].toInteger()
         def latestMinor = latestVersion.split("\\.")[1].toInteger()
-        Map<String, String> versionsToBuild = [:]
-        Map<String, String> versionsAll = [:]
         for (ver = minMinor; ver<=latestMinor; ver++) {
             versionsAll["release/1.${ver}"] = "1.${ver}"
         }
@@ -87,7 +88,7 @@ node('Linux') {
     } 
 
     stage('Prepare sources as worktrees') { // Do this sequentially
-        sh 'git clone --bare https://github.com/czoido/docs.git src'
+        sh "git clone --bare https://github.com/${params.docs_repo}.git src"
         dir('src') {
             // create latest branch
             versionsToBuild.each { branchName, folderName ->
