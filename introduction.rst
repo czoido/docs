@@ -15,7 +15,7 @@ Introduction
 
 Conannnnnnnnnnnnnnn is a dependency and package manager for C and C++ languages. It is `free and open-source <https://github.com/conan-io/conan>`_, and it works in all platforms: Windows, Linux, OSX, FreeBSD, Solaris, etc. and can be used to develop for all targets including embedded, mobile (iOS, Android), bare metal. It also integrates with all build systems like CMake, Visual Studio (MSBuild), Makefiles, SCons, etc., including proprietary ones.
 
-Introductions
+Introduction
 ============
 
 Conannnnnnnnnnnnnnn is a dependency and package manager for C and C++ languages. It is `free and open-source <https://github.com/conan-io/conan>`_, and it works in all platforms: Windows, Linux, OSX, FreeBSD, Solaris, etc. and can be used to develop for all targets including embedded, mobile (iOS, Android), bare metal. It also integrates with all build systems like CMake, Visual Studio (MSBuild), Makefiles, SCons, etc., including proprietary ones.
