@@ -2,6 +2,8 @@
 
 node('Linux') {
 
+    def branches_to_publish
+
     stage('Check params') {
         assert params.branches_to_publish, 'Provide branches to publish separated with semicolons'
         assert params.current_release_branch, 'Provide branch for docs of current Conan version'
@@ -10,6 +12,12 @@ node('Linux') {
         if (params.publish) {
             assert params.prefix, 'Provide the prefix (base URL) if you are going to publish'
         }
+
+        branches_to_publish = params.branches_to_publish.split(";")
+
+        branches_to_publish.each { branch ->
+            assert (branch.startsWith("release") || branch == "latest"), 'Only release or latest branches can be published'
+        }        
 
         echo """
             Generate Conan docs webpage
@@ -22,7 +30,6 @@ node('Linux') {
         """
     }
 
-    def branches = params.branches_to_publish.split(";")
     String prefix = params.prefix ?: "${BUILD_URL}artifact/gh-pages/"
     def image = null
 
@@ -30,7 +37,7 @@ node('Linux') {
         // Always use the Docker image on latest to build the docs
         sh "git clone --branch latest --depth 2 https://github.com/${params.docs_repo}.git tmp"
         dir('tmp') {
-            if ("latest" in branches) {
+            if ("latest" in branches_to_publish) {
                 if (!params.build_all_branches) {
                     // we have to check if we have changed _themes/conan in the latest branch --> in that case we have
                     // rebuild the docs for all branches, also if this is triggered by the generation of a new Conan
@@ -69,9 +76,11 @@ node('Linux') {
         versionsAll['latest'] = 'latest'
 
         if (!params.build_all_branches) {
-            branches.each { branch ->
+            branches_to_publish.each { branch ->
                 if (branch!="latest") {
-                    version = branch.split("/")[1]
+                    def version = branch.split("/")[1]
+                    def versionMinor = version.split("\\.")[1].toInteger()
+                    assert versionMinor <= latestMinor, "Can't publish versions > ${latestVersion}"
                     versionsToBuild[branch] = version
                 }
                 else {
