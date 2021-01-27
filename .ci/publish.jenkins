@@ -44,7 +44,7 @@ node('Linux') {
                         echo "Docs template changes or new version detected. Build all branches."
                     }
                     else {
-                        echo "No changes detected for docs templates, will build only branches ${branches.join(', ')}"
+                        echo "No changes detected for docs templates, will build only branches ${branches_to_publish.join(', ')}"
                     }
                 }
             }
