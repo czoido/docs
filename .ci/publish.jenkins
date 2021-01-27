@@ -159,16 +159,17 @@ node('Linux') {
         echo "Inspect generated webpage at ${BUILD_URL}artifact/gh-pages/en/latest/index.html"
     }
     
-    stage('Publish to ') {
-        when {expression { return params.publish }}
-        dir('gh-pages') {
-            sh 'git add .'
-            sh 'git config user.email "conanci@jfrog.com"'
-            sh 'git config user.name "ConanCI bot"'
-            sh "git commit -m \"Automatic deploy (build number ${BUILD_NUMBER})\""
-            withCredentials([usernamePassword(credentialsId: 'conanci-gh-token-stg', usernameVariable: 'GH_USER', passwordVariable: 'GH_PASS')]) {
-                sh "git remote add origin-pages https://$GH_USER:$GH_PASS@github.com/${params.docs_repo}.git"
-                sh 'git push --quiet origin-pages gh-pages'
+    if (params.publish) {
+        stage("Publish to https://github.com/${params.docs_repo}.git") {
+            dir('gh-pages') {
+                sh 'git add .'
+                sh 'git config user.email "conanci@jfrog.com"'
+                sh 'git config user.name "ConanCI bot"'
+                sh "git commit -m \"Automatic deploy (build number ${BUILD_NUMBER})\""
+                withCredentials([usernamePassword(credentialsId: 'conanci-gh-token-stg', usernameVariable: 'GH_USER', passwordVariable: 'GH_PASS')]) {
+                    sh "git remote add origin-pages https://$GH_USER:$GH_PASS@github.com/${params.docs_repo}.git"
+                    sh 'git push --quiet origin-pages gh-pages'
+                }
             }
         }
     }
