@@ -18,7 +18,7 @@ node('Linux') {
              - params.build_all_branches: ${params.build_all_branches}
              - prefix: ${prefix}
              - docs_repo: ${params.docs_repo}
-             - branches to publish: ${params.branches_to_publish.join(', ')}
+             - branches to publish: ${params.branches_to_publish}
         """
     }
 
