@@ -146,6 +146,7 @@ node('Linux') {
             [$class: 'StringParameterValue', name: 'current_release_branch', value: currentReleaseBranch],
             [$class: 'StringParameterValue', name: 'prefix', value: "${publishDocsUrl}"],
             [$class: 'StringParameterValue', name: 'docs_repo', value: "${docsRepo}"],
+            [$class: 'BooleanParameterValue', name: 'build_all_branches', value: false],
             [$class: 'BooleanParameterValue', name: 'publish', value: true]
         ])
     }

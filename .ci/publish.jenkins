@@ -2,19 +2,15 @@
 
 node('Linux') {
 
-    String prefix = params.prefix ?: "${BUILD_URL}artifact/gh-pages/"
-    def branches
-    Map<String, String> versionsToBuild = [:]
-    Map<String, String> versionsAll = [:]
-
     stage('Check params') {
         assert params.branches_to_publish, 'Provide branches to publish separated with semicolons'
         assert params.current_release_branch, 'Provide branch for docs of current Conan version'
-        assert params.current_release_branch, 'Provide branch for docs of current Conan version'
+        assert params.docs_repo, 'Provide the docs repo location'
+
         if (params.publish) {
             assert params.prefix, 'Provide the prefix (base URL) if you are going to publish'
         }
-        branches = params.branches_to_publish.split(";")
+
         echo """
             Generate Conan docs webpage
              - params.publish: ${params.publish}
@@ -26,14 +22,16 @@ node('Linux') {
         """
     }
 
-    def build_all_branches = params.build_all_branches
+    def branches = params.branches_to_publish.split(";")
+    String prefix = params.prefix ?: "${BUILD_URL}artifact/gh-pages/"
     def image = null
+
     stage('Build docker image') {
-        // Build the docker image using the same commit as the current 'publish.jenkins' file
+        // Always use the Docker image on latest to build the docs
         sh "git clone --branch latest --depth 2 https://github.com/${params.docs_repo}.git tmp"
         dir('tmp') {
             if ("latest" in branches) {
-                if (!build_all_branches) {
+                if (!params.build_all_branches) {
                     // we have to check if we have changed _themes/conan in the latest branch --> in that case we have
                     // rebuild the docs for all branches, also if this is triggered by the generation of a new Conan
                     // version we should publish all the documentation, we detect this if the changelog changes (have to improve this)
@@ -56,6 +54,9 @@ node('Linux') {
         }
     }
 
+    Map<String, String> versionsToBuild = [:]
+    Map<String, String> versionsAll = [:]
+
     stage('Check branches to build') {
         // check this for 2.0 docs
         def minVersionToPublish = "1.3"
@@ -67,7 +68,7 @@ node('Linux') {
         }
         versionsAll['latest'] = 'latest'
 
-        if (!build_all_branches) {
+        if (!params.build_all_branches) {
             branches.each { branch ->
                 if (branch!="latest") {
                     version = branch.split("/")[1]
@@ -110,7 +111,7 @@ node('Linux') {
             image.inside {
                 stage('Prepare sources') {
                     writeJSON json: versionsAll, file: "${folderName}/versions.json"
-                    if (build_all_branches) {
+                    if (params.build_all_branches) {
                         if (folderName != 'latest') { 
                             sh "rm -fr ${folderName}/_themes/conan"
                             sh "cp -a latest/_themes/. ${folderName}/_themes/"
@@ -158,14 +159,17 @@ node('Linux') {
         echo "Inspect generated webpage at ${BUILD_URL}artifact/gh-pages/en/latest/index.html"
     }
     
-    dir('gh-pages') {
-        sh 'git add .'
-        sh 'git config user.email "conanci@jfrog.com"'
-        sh 'git config user.name "ConanCI bot"'
-        sh "git commit -m \"Automatic deploy (build number ${BUILD_NUMBER})\""
-        withCredentials([usernamePassword(credentialsId: 'conanci-gh-token-stg', usernameVariable: 'GH_USER', passwordVariable: 'GH_PASS')]) {
-            sh "git remote add origin-pages https://$GH_USER:$GH_PASS@github.com/${params.docs_repo}.git"
-            sh 'git push --quiet origin-pages gh-pages'
+    stage('Publish to ') {
+        when {expression { return params.publish }}
+        dir('gh-pages') {
+            sh 'git add .'
+            sh 'git config user.email "conanci@jfrog.com"'
+            sh 'git config user.name "ConanCI bot"'
+            sh "git commit -m \"Automatic deploy (build number ${BUILD_NUMBER})\""
+            withCredentials([usernamePassword(credentialsId: 'conanci-gh-token-stg', usernameVariable: 'GH_USER', passwordVariable: 'GH_PASS')]) {
+                sh "git remote add origin-pages https://$GH_USER:$GH_PASS@github.com/${params.docs_repo}.git"
+                sh 'git push --quiet origin-pages gh-pages'
+            }
         }
     }
 }
