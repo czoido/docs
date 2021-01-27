@@ -16,7 +16,8 @@ node('Linux') {
         branches_to_publish = params.branches_to_publish.split(";")
 
         branches_to_publish.each { branch ->
-            assert (branch.startsWith("release") || branch == "latest"), 'Only release or latest branches can be published'
+            def cond = (branch.startsWith("release") || branch == "latest")
+            assert cond, 'Only release or latest branches can be published'
         }        
 
         echo """
