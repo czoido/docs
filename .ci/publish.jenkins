@@ -70,7 +70,7 @@ node('Linux') {
 
         if (!params.build_all_branches) {
             branches_to_publish.each { branch ->
-                if (!branch.startsWith("release") && !branch.startsWith("latest")) {
+                if (!(branch.startsWith('release')) || branch!='latest') {
                     throw new Exception("Only release or latest branches can be published")
                 }
                 if (branch!="latest") {
