@@ -2,8 +2,6 @@
 
 node('Linux') {
 
-    def branches_to_publish
-
     stage('Check params') {
         assert params.branches_to_publish, 'Provide branches to publish separated with semicolons'
         assert params.current_release_branch, 'Provide branch for docs of current Conan version'
@@ -12,14 +10,6 @@ node('Linux') {
         if (params.publish) {
             assert params.prefix, 'Provide the prefix (base URL) if you are going to publish'
         }
-
-        branches_to_publish = params.branches_to_publish.split(";")
-
-        branches_to_publish.each { branch ->
-            if (!branch.startsWith("release") && !branch.startsWith("latest")) {
-                throw new Exception("Only release or latest bracnches can be published")
-            }
-        }        
 
         echo """
             Generate Conan docs webpage
@@ -32,6 +22,7 @@ node('Linux') {
         """
     }
 
+    def branches_to_publish = params.branches_to_publish.split(";")
     String prefix = params.prefix ?: "${BUILD_URL}artifact/gh-pages/"
     def image = null
 
@@ -79,6 +70,9 @@ node('Linux') {
 
         if (!params.build_all_branches) {
             branches_to_publish.each { branch ->
+                if (!branch.startsWith("release") && !branch.startsWith("latest")) {
+                    throw new Exception("Only release or latest branches can be published")
+                }
                 if (branch!="latest") {
                     def version = branch.split("/")[1]
                     def versionMinor = version.split("\\.")[1].toInteger()
