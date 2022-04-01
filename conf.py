@@ -24,6 +24,10 @@ import json
 
 sys.path.insert(0, os.path.abspath('./_themes'))
 
+# path to the conan_sources, they must be cloned to the branch
+# that we are building the docs for
+sys.path.insert(0, os.path.abspath('../conan_sources'))
+
 
 # -- General configuration ------------------------------------------------
 
@@ -39,7 +43,12 @@ extensions = [
     'sphinxcontrib.spelling',
     'sphinx_sitemap',
     'notfound.extension',
+    'sphinx.ext.autodoc',
 ]
+
+# autodoc configuration
+add_module_names = False
+autoclass_content = 'both'
 
 # The short X.Y version.
 version = "1.47"
