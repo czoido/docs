@@ -26,7 +26,7 @@ sys.path.insert(0, os.path.abspath('./_themes'))
 
 # path to the conan_sources, they must be cloned to the branch
 # that we are building the docs for
-sys.path.insert(0, os.path.abspath('../conan_sources'))
+sys.path.insert(0, os.path.abspath('./conan_sources'))
 
 
 # -- General configuration ------------------------------------------------
@@ -113,7 +113,7 @@ language = None
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['_build', '**/site-packages']
+exclude_patterns = ['_build', '**/site-packages', 'conan_sources/**.rst']
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
