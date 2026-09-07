@@ -104,12 +104,15 @@ with chdir(f"{sources_folder}"):
         run(f"rm -rf {branch_folder}/conan_sources")
         run(f"git clone --single-branch -b {conan_branch} --depth 1 {conan_repo_url} {branch_folder}/conan_sources")
 
-        # A regular (non-editable) install: some older Conan versions hit a
-        # circular-import error under pip's default editable-install
-        # mechanism (PEP 660 editable wheels). We don't need the sources to
-        # stay "live" here, so a normal install sidesteps that entirely while
-        # still resolving conan's own dependencies.
         run(f"pip install {branch_folder}/conan_sources")
+
+        # Some older Conan versions have a real circular import between
+        # conans.model.conf and the conan package's own __init__.py. It only
+        # surfaces if something imports conans.model.conf directly before
+        # anything has imported the top-level conan package (which is what
+        # autodoc does depending on the order Sphinx processes .rst files).
+        # Pre-importing conan here forces the safe order regardless of that.
+        run("python3 -c 'import conan'")
 
     # generate html
     is_v2 = branch_folder.startswith("2")
