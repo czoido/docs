@@ -7,6 +7,7 @@ RUN apt-get update \
         graphviz \
         libenchant-2-2 \
         latexmk \
+        xindy \
         texlive-full \
     && rm -rf /var/lib/apt/lists/*
 
