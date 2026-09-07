@@ -7,11 +7,7 @@ RUN apt-get update \
         graphviz \
         libenchant-2-2 \
         latexmk \
-        texlive-latex-base \
-        texlive-fonts-recommended \
-        texlive-fonts-extra \
-        texlive-latex-extra \
-        texlive-xetex \
+        texlive-full \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt /tmp/requirements.txt
