@@ -104,15 +104,12 @@ with chdir(f"{sources_folder}"):
         run(f"rm -rf {branch_folder}/conan_sources")
         run(f"git clone --single-branch -b {conan_branch} --depth 1 {conan_repo_url} {branch_folder}/conan_sources")
 
-        # --config-settings editable_mode=compat avoids circular-import
-        # failures that some older Conan versions hit under pip's default
-        # PEP 660 editable install mechanism.
-        run(f"pip install --config-settings editable_mode=compat -e {branch_folder}/conan_sources")
-
-        # for some reason even adding this to autodoc_mock_imports
-        # does not work, se we have to install the real dependency
-        # TODO: move this to jenkins
-        # run('pip3 install colorama')
+        # A regular (non-editable) install: some older Conan versions hit a
+        # circular-import error under pip's default editable-install
+        # mechanism (PEP 660 editable wheels). We don't need the sources to
+        # stay "live" here, so a normal install sidesteps that entirely while
+        # still resolving conan's own dependencies.
+        run(f"pip install {branch_folder}/conan_sources")
 
     # generate html
     is_v2 = branch_folder.startswith("2")
