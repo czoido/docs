@@ -26,6 +26,11 @@ jobs:
   generate:
     needs: prepare-matrix
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository_owner }}/docs-ci:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     strategy:
       fail-fast: false
       matrix:
@@ -33,11 +38,6 @@ jobs:
     steps:
       - name: Checkout docs (CI scripts)
         uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
 
       - name: Determine if this branch needs PDF
         id: pdf_check
@@ -49,15 +49,6 @@ jobs:
           else
             echo "with_pdf=false" >> "$GITHUB_OUTPUT"
           fi
-
-      - name: Install LaTeX (only for branches that need PDF)
-        if: steps.pdf_check.outputs.with_pdf == 'true'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y latexmk texlive-latex-base texlive-fonts-recommended texlive-fonts-extra texlive-latex-extra
-
-      - name: Install python dependencies
-        run: pip install -r requirements.txt
 
       - name: Prepare sources as worktree
         working-directory: .ci/scripts
@@ -88,17 +79,14 @@ jobs:
   assemble:
     needs: generate
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository_owner }}/docs-ci:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout docs (CI scripts)
         uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install python dependencies
-        run: pip install -r requirements.txt
 
       - name: Download all generated outputs
         uses: actions/download-artifact@v4
