@@ -5,6 +5,7 @@ RUN apt-get update \
         git \
         make \
         graphviz \
+        libenchant-2-2 \
         latexmk \
         texlive-latex-base \
         texlive-fonts-recommended \
