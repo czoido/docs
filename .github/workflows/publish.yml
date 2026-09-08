@@ -7,10 +7,23 @@ on:
         description: 'Comma-separated branches to regenerate (e.g. master,release/2.32)'
         required: true
         default: 'master'
+        type: string
       pdf_branches:
         description: 'Comma-separated branches to regenerate PDF for (empty = regenerate for all requested branches)'
         required: false
         default: ''
+        type: string
+  workflow_call:
+    inputs:
+      branches:
+        description: 'Comma-separated branches to regenerate (e.g. master,release/2.32)'
+        required: true
+        type: string
+      pdf_branches:
+        description: 'Comma-separated branches to regenerate PDF for (empty = regenerate for all requested branches)'
+        required: false
+        default: ''
+        type: string
 
 jobs:
   prepare-matrix:
@@ -21,7 +34,7 @@ jobs:
     steps:
       - id: set
         run: |
-          branches="${{ github.event.inputs.branches }}"
+          branches="${{ inputs.branches }}"
           json=$(python3 -c "import json,sys; print(json.dumps(sys.argv[1].split(',')))" "$branches")
           echo "branches=$json" >> "$GITHUB_OUTPUT"
           echo "branches_csv=$branches" >> "$GITHUB_OUTPUT"
@@ -45,7 +58,7 @@ jobs:
       - name: Determine if this branch needs PDF
         id: pdf_check
         run: |
-          pdf_branches="${{ github.event.inputs.pdf_branches }}"
+          pdf_branches="${{ inputs.pdf_branches }}"
           branch="${{ matrix.branch }}"
           if [ -z "$pdf_branches" ] || echo ",$pdf_branches," | grep -q ",$branch,"; then
             echo "with_pdf=true" >> "$GITHUB_OUTPUT"
