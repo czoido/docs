@@ -22,7 +22,6 @@ jobs:
           # patch branches (release/2.32.1) - mirrors the real Jenkinsfile's
           # branch_name.count(".") == 1 check.
           dots=$(echo -n "$target" | tr -cd '.' | wc -c)
-          echo "DEBUG target=[$target] dots=[$dots]"
           if [[ "$target" == release/2.* && "$dots" -eq 1 ]]; then
             echo "is_minor_release=true" >> "$GITHUB_OUTPUT"
           else
