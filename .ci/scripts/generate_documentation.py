@@ -2,6 +2,7 @@ import argparse
 import json
 import os
 import shutil
+import sysconfig
 
 from common import chdir, conan_versions, latest_v2_folder, latest_v1_folder, latest_v2_branch, run
 
@@ -110,9 +111,14 @@ with chdir(f"{sources_folder}"):
         # conans.model.conf and the conan package's own __init__.py. It only
         # surfaces if something imports conans.model.conf directly before
         # anything has imported the top-level conan package (which is what
-        # autodoc does depending on the order Sphinx processes .rst files).
-        # Pre-importing conan here forces the safe order regardless of that.
-        run("python3 -c 'import conan'")
+        # autodoc does, depending on the order Sphinx processes .rst files).
+        # sphinx-build runs as its own separate process, so pre-importing
+        # conan here has no effect on it. sitecustomize.py is auto-loaded by
+        # every new Python process in this environment, so writing to it
+        # forces the safe import order regardless of process boundaries.
+        sitecustomize_path = os.path.join(sysconfig.get_path("purelib"), "sitecustomize.py")
+        with open(sitecustomize_path, "a") as f:
+            f.write("import conan\n")
 
     # generate html
     is_v2 = branch_folder.startswith("2")
