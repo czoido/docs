@@ -12,6 +12,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    outputs:
+      is_minor_release: ${{ steps.branches.outputs.is_minor_release }}
     container:
       image: ghcr.io/${{ github.repository_owner }}/docs-ci:latest
       credentials:
@@ -30,6 +32,16 @@ jobs:
           conan_branch=$(echo "$target" | cut -d'.' -f1,2)
           echo "target=$target" >> "$GITHUB_OUTPUT"
           echo "conan_branch=$conan_branch" >> "$GITHUB_OUTPUT"
+
+          # Only minor release branches (release/2.32) self-publish, not
+          # patch branches (release/2.32.1) - mirrors the real Jenkinsfile's
+          # branch_name.count(".") == 1 check.
+          dots=$(echo -n "$target" | tr -cd '.' | wc -c)
+          if [[ "$target" == release/2.* && "$dots" -eq 1 ]]; then
+            echo "is_minor_release=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_minor_release=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Clone Conan sources for autodoc
         run: git clone --single-branch -b "${{ steps.branches.outputs.conan_branch }}" --depth 1 https://github.com/conan-io/conan.git conan_sources
@@ -54,3 +66,14 @@ jobs:
             _build/html
             _build/latex
           retention-days: 7
+
+  publish-own-branch:
+    needs: test
+    if: github.event_name == 'push' && needs.test.outputs.is_minor_release == 'true'
+    # TODO: point this at conan-io/docs/.github/workflows/publish.yml@master
+    # once this stub is deployed to the real repo. Pinned to the fork for
+    # testing so it never touches the real conan-io/docs publish pipeline.
+    uses: czoido/docs/.github/workflows/publish.yml@master
+    with:
+      branches: ${{ github.ref_name }}
+      pdf_branches: ${{ github.ref_name }}
