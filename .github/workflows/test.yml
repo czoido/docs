@@ -9,21 +9,20 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository_owner }}/docs-ci:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout docs
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
       - name: Clone Conan sources for autodoc
         run: git clone --single-branch -b "${{ github.ref_name }}" --depth 1 https://github.com/conan-io/conan.git conan_sources
 
-      - name: Install dependencies
+      - name: Install Conan sources
         run: |
-          pip install -r requirements.txt
           pip install -e conan_sources
           conan --version
 
