@@ -13,6 +13,11 @@ on:
         required: false
         default: ''
         type: string
+      publish:
+        description: 'Push to gh-pages and deploy to GitHub Pages for real (false = artifact preview only)'
+        required: false
+        default: false
+        type: boolean
   workflow_call:
     inputs:
       branches:
@@ -24,6 +29,11 @@ on:
         required: false
         default: ''
         type: string
+      publish:
+        description: 'Push to gh-pages and deploy to GitHub Pages for real (false = artifact preview only)'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   prepare-matrix:
@@ -97,6 +107,8 @@ jobs:
   assemble:
     needs: [prepare-matrix, generate]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     container:
       image: ghcr.io/${{ github.repository_owner }}/docs-ci:latest
       credentials:
@@ -139,3 +151,21 @@ jobs:
           name: gh-pages-preview-${{ github.run_id }}
           path: gh_pages_out
           retention-days: 7
+
+      # From here on, only runs when inputs.publish is true. Everything
+      # above (including the artifact upload) always runs, so a plain
+      # workflow_dispatch/workflow_call test keeps working exactly as
+      # before with publish left at its default (false).
+
+      - name: Push to gh-pages branch
+        if: inputs.publish == true
+        working-directory: gh_pages_out
+        run: |
+          rm -rf .git
+          git init -q
+          git checkout -q -b gh-pages
+          git add .
+          git -c user.email="conanci@jfrog.com" \
+              -c user.name="ConanCI bot" \
+              commit -q -m "Automatic deploy (build number ${{ github.run_id }})"
+          git push -q --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" gh-pages
